@@ -5,6 +5,7 @@ GRAVITY = 0.5
 PLAYER_JUMP_SPEED = 16
 CAMERA_LERP = 0.1
 ENEMY_SPEED = 1.5
+BOUNCE_SPEED = 10
 
 
 class Mario(arcade.Window):
@@ -88,19 +89,32 @@ class Mario(arcade.Window):
         self.physics_engine.update()
 
         # Сбор монет
-
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
         for coin in coins_hit_list:
             coin.remove_from_sprite_lists()
 
+        # Проверка столкновения с врагами
         enemy_hit_list = arcade.check_for_collision_with_list(self.player, self.Mob_Grib)
         enemy_hit_list += arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
 
-        if enemy_hit_list:
-            pass
+        for enemy in enemy_hit_list:
+            # Проверяем, прыгнул ли игрок на врага сверху
+            vertical_overlap = enemy.top - self.player.bottom
 
-        secret_hit_list = arcade.check_for_collision_with_list(self.player, self.secret_blocks_grib_life)
-        secret_hit_list += arcade.check_for_collision_with_list(self.player, self.secret_blocks_grib_baff)
+            if vertical_overlap > 0 and vertical_overlap < 10 and self.player.change_y < 0:
+
+                # Отталкиваем вверх
+                self.player.change_y = BOUNCE_SPEED
+
+                # Удаляем врага
+                if enemy in self.Mob_Grib:
+                    enemy.remove_from_sprite_lists()
+                elif enemy in self.Mob_Turtle:
+                    enemy.remove_from_sprite_lists()
+
+            else:
+                # Столкновение сбоку или снизу - смерть игрока
+                ...
 
         if self.player.center_x < 0:
             self.player.center_x = 0
@@ -150,12 +164,14 @@ class Mario(arcade.Window):
 
             enemy.center_x += enemy.change_x
 
+            # Анимация гриба
             enemy.texture = (self.textures[0][self.current_texture])
 
-            self.animation_timer += 1
-            if self.animation_timer == 25:
-                self.current_texture = 1 - self.current_texture
-                self.animation_timer = 0
+        # Обновление таймера анимации
+        self.animation_timer += 1
+        if self.animation_timer == 10:
+            self.current_texture = 1 - self.current_texture
+            self.animation_timer = 0
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
