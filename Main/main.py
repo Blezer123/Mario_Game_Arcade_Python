@@ -161,8 +161,6 @@ class Mario(arcade.Window):
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
-        elif key == arcade.key.DOWN:
-            pass
         elif key == arcade.key.LEFT:
             self.player.change_x = -SPEED
         elif key == arcade.key.RIGHT:
