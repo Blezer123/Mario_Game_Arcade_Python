@@ -42,7 +42,7 @@ class Mario(arcade.Window):
         self.secret_blocks_grib_baff = tile_map.sprite_lists["secret_blocks_grib_baff"]
         self.BG = tile_map.sprite_lists["BackGround"]
         self.Truba = tile_map.sprite_lists["Truba"]
-        self.Mob_Turtle = tile_map.sprite_lists["Mob_Turtle"]
+        self.Mob_Turtle = tile_map.sprite_lists["Mob_Turtle_Red"]
 
         self.grid = [[0] * 150 for x in range(50)]
 
