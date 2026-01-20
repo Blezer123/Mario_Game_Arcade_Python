@@ -12,7 +12,7 @@ class Mario(arcade.Window):
     def __init__(self):
         super().__init__(1000, 600, "Mario Game", fullscreen=True)
 
-        tile_map = arcade.load_tilemap("C:\\2_Artema\\Level_3\\Level_3.tmx", scaling=2)
+        tile_map = arcade.load_tilemap("/home/user/2_Artema/Level_3/Level_3.tmx", scaling=2)
 
         self.map_pixel_width = tile_map.width * tile_map.tile_width
         self.map_pixel_height = tile_map.height * tile_map.tile_height
@@ -29,10 +29,10 @@ class Mario(arcade.Window):
         self.animation_timer = 0
         self.current_texture = 0
 
-        self.textures = [[arcade.load_texture("C:\\2_Artema\\images\\Grib_1.png"), arcade.load_texture("C:\\2_Artema\\images\\Grib_2.png")]]
+        self.textures = [[arcade.load_texture("/home/user/2_Artema/images/Grib_1.png"), arcade.load_texture("/home/user/2_Artema/images/Grib_2.png")]]
 
     def setup(self):
-        tile_map = arcade.load_tilemap("C:\\2_Artema\\Level_3\\Level_3.tmx", scaling=1)
+        tile_map = arcade.load_tilemap("/home/user/2_Artema/Level_3/Level_3.tmx", scaling=1)
 
         self.Ground = tile_map.sprite_lists["Ground"]
         self.Sky = tile_map.sprite_lists["Sky"]
@@ -51,7 +51,8 @@ class Mario(arcade.Window):
         x = 2 * self.cell_size + self.cell_size // 2
         self.player.center_x = 64
         self.player.center_y = 9 * 64
-        self.all_sprites.append(self.player)
+        self.all_sprites = (self.Ground, self.Sky, self.secret_blocks_grib_baff,
+                            self.secret_blocks_grib_life, self.Truba)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,
@@ -112,8 +113,9 @@ class Mario(arcade.Window):
                 elif enemy in self.Mob_Turtle:
                     enemy.remove_from_sprite_lists()
 
+            # Столкновение сбоку или снизу - смерть игрока
+
             else:
-                # Столкновение сбоку или снизу - смерть игрока
                 ...
 
         if self.player.center_x < 0:
