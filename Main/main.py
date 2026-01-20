@@ -1,4 +1,5 @@
 import arcade
+import os
 
 SPEED = 5
 GRAVITY = 0.5
@@ -12,7 +13,10 @@ class Mario(arcade.Window):
     def __init__(self):
         super().__init__(1000, 600, "Mario Game", fullscreen=True)
 
-        tile_map = arcade.load_tilemap("/home/user/2_Artema/Level_3/Level_3.tmx", scaling=2)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        tmx_path = os.path.join(current_dir, "..", "Level_3", "Level_3.tmx")
+        tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.map_pixel_width = tile_map.width * tile_map.tile_width
         self.map_pixel_height = tile_map.height * tile_map.tile_height
@@ -29,10 +33,14 @@ class Mario(arcade.Window):
         self.animation_timer = 0
         self.current_texture = 0
 
-        self.textures = [[arcade.load_texture("/home/user/2_Artema/images/Grib_1.png"), arcade.load_texture("/home/user/2_Artema/images/Grib_2.png")]]
+        images_dir = os.path.join(current_dir, "..", "images")
+        self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
+                         arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
     def setup(self):
-        tile_map = arcade.load_tilemap("/home/user/2_Artema/Level_3/Level_3.tmx", scaling=1)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        tmx_path = os.path.join(current_dir, "..", "Level_3", "Level_3.tmx")
+        tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.Ground = tile_map.sprite_lists["Ground"]
         self.Sky = tile_map.sprite_lists["Sky"]
@@ -56,7 +64,7 @@ class Mario(arcade.Window):
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,
-            platforms=self.Ground,
+            platforms=self.all_sprites,
             gravity_constant=GRAVITY
         )
 
@@ -82,7 +90,7 @@ class Mario(arcade.Window):
         self.Mob_Turtle.draw()
         self.Coins.draw()
 
-        self.all_sprites.draw()
+        arcade.draw_sprite(self.player)
 
         self.gui_camera.use()
 
@@ -90,24 +98,27 @@ class Mario(arcade.Window):
         self.physics_engine.update()
 
         # Сбор монет
+
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
         for coin in coins_hit_list:
             coin.remove_from_sprite_lists()
 
         # Проверка столкновения с врагами
+
         enemy_hit_list = arcade.check_for_collision_with_list(self.player, self.Mob_Grib)
         enemy_hit_list += arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
 
         for enemy in enemy_hit_list:
             # Проверяем, прыгнул ли игрок на врага сверху
-            vertical_overlap = enemy.top - self.player.bottom
 
-            if vertical_overlap > 0 and vertical_overlap < 10 and self.player.change_y < 0:
+            if self.player.bottom > enemy.center_y:
 
                 # Отталкиваем вверх
+
                 self.player.change_y = BOUNCE_SPEED
 
                 # Удаляем врага
+
                 if enemy in self.Mob_Grib:
                     enemy.remove_from_sprite_lists()
                 elif enemy in self.Mob_Turtle:
