@@ -18,9 +18,9 @@ class Menu(arcade.Window):
         self.Grib = tile_map.sprite_lists["Mob"]
         self.Block = tile_map.sprite_lists["Block"]
 
-        self.textures = [[arcade.load_texture("C:/2_Artema/images/Grib_1.png"), arcade.load_texture("C:/2_Artema/images/Grib_2.png")]]
+        self.textures = [[arcade.load_texture("C:\\2_Artema\\images\\Grib_1.png"), arcade.load_texture("C:\\2_Artema\\images\\Grib_2.png")]]
 
-        self.indicator_sprite = arcade.Sprite("C:/2_Artema/images/Grib_Baff.png", scale=0.6)
+        self.indicator_sprite = arcade.Sprite("C:\\2_Artema\\images\\Grib_Baff.png", scale=0.6)
 
         self.animation_timer = 0
         self.current_texture = 0
@@ -183,6 +183,7 @@ def main():
     game = Menu()
     game.setup()
     arcade.run()
+
 
 if __name__ == "__main__":
     main()
