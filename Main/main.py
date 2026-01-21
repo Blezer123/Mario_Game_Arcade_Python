@@ -46,11 +46,15 @@ class Mario(arcade.Window):
         self.Sky = tile_map.sprite_lists["Sky"]
         self.Coins = tile_map.sprite_lists["Coins"]
         self.secret_blocks_grib_life = tile_map.sprite_lists["secret_blocks_grib_life"]
+        self.secret_blocks_coins = tile_map.sprite_lists["secret_blocks_coins"]
         self.Mob_Grib = tile_map.sprite_lists["Mob_Grib"]
         self.secret_blocks_grib_baff = tile_map.sprite_lists["secret_blocks_grib_baff"]
         self.BG = tile_map.sprite_lists["BackGround"]
         self.Truba = tile_map.sprite_lists["Truba"]
         self.Mob_Turtle = tile_map.sprite_lists["Mob_Turtle_Red"]
+        self.Black = tile_map.sprite_lists["Black"]
+        self.Sky_Blocks = tile_map.sprite_lists["Sky_Blocks"]
+        self.Trofey = tile_map.sprite_lists["Trofey"]
 
         self.grid = [[0] * 150 for x in range(50)]
 
