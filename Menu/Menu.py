@@ -1,4 +1,6 @@
 import arcade
+import os
+from Level_1 import Level_1
 
 ENEMY_SPEED = 1
 
@@ -6,10 +8,14 @@ ENEMY_SPEED = 1
 class Menu(arcade.Window):
 
     def __init__(self):
-        super().__init__(1000, 600, "Mario Game", fullscreen=True)
+        super().__init__(1000, 600, "Mario Menu", fullscreen=True)
 
     def setup(self):
-        tile_map = arcade.load_tilemap("Menu_Map.tmx", scaling=1)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Загрузка карты
+        tmx_path = os.path.join(current_dir, "Menu_Map.tmx")
+        tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.screen_width = self.width
         self.screen_height = self.height
@@ -18,9 +24,15 @@ class Menu(arcade.Window):
         self.Grib = tile_map.sprite_lists["Mob"]
         self.Block = tile_map.sprite_lists["Block"]
 
-        self.textures = [[arcade.load_texture("C:\\2_Artema\\images\\Grib_1.png"), arcade.load_texture("C:\\2_Artema\\images\\Grib_2.png")]]
-
-        self.indicator_sprite = arcade.Sprite("C:\\2_Artema\\images\\Grib_Baff.png", scale=0.6)
+        # Загрузка текстур
+        images_dir = os.path.join(current_dir, "..", "images")
+        self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
+                         arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
+        # Загрузка спрайта индикатора
+        self.indicator_sprite = arcade.Sprite(
+            os.path.join(images_dir, "Grib_Baff.png"),
+            scale=0.6
+        )
 
         self.animation_timer = 0
         self.current_texture = 0
@@ -51,7 +63,7 @@ class Menu(arcade.Window):
             self.indicator_sprite.center_y = option1_y + 50
             arcade.draw_sprite(self.indicator_sprite)
 
-        #текст 1 с обводкой
+        # текст 1 с обводкой
 
         arcade.draw_text(
             "1",
@@ -74,7 +86,7 @@ class Menu(arcade.Window):
             anchor_y="center"
         )
 
-        #текст Player с обводкой
+        # текст Player с обводкой
 
         arcade.draw_text(
             "Player",
@@ -104,7 +116,7 @@ class Menu(arcade.Window):
             self.indicator_sprite.center_y = option2_y
             arcade.draw_sprite(self.indicator_sprite)
 
-        #текст 2 с обводкой
+        # текст 2 с обводкой
 
         arcade.draw_text(
             "2",
@@ -127,7 +139,7 @@ class Menu(arcade.Window):
             anchor_y="center"
         )
 
-        #текст Players с обводкой
+        # текст Players с обводкой
 
         arcade.draw_text(
             "Players",
@@ -175,8 +187,15 @@ class Menu(arcade.Window):
             self.selected_option = 1
         elif key == arcade.key.DOWN:
             self.selected_option = 2
-        if self.selected_option == 1 and key == arcade.key.ENTER:
-            ...
+        elif key == arcade.key.ENTER:
+            if self.selected_option == 1:
+                # Закрываем меню
+                self.close()
+
+                # Запускаем игру
+                game = Level_1.Level_1()
+                game.setup()
+                arcade.run()
 
 
 def main():
