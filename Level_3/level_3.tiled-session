@@ -1,0 +1,115 @@
+{
+    "activeFile": "C:/2_Artema/Level_1/level_1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "C:/2_Artema/Level_1/level_1.tmx": {
+            "scale": 0.2649609375,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 6295.267580716498,
+                "y": 1432.2865988500664
+            }
+        },
+        "C:/2_Artema/Level_2.tmx": {
+            "scale": 0.2904921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3201.4630341822876,
+                "y": 958.7176935696423
+            }
+        },
+        "C:/2_Artema/Level_2/Textures/Menu_Textures.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/2_Artema/Level_2/Textures/Mob_Grib.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/2_Artema/Level_2/Textures/Textures_levels.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/2_Artema/Level_2/level_2.tmx": {
+            "scale": 0.2904921875,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 3328.8330688755614,
+                "y": 862.3295592071645
+            }
+        },
+        "C:/2_Artema/Level_4/Level_3_1.tmx": {
+            "scale": 0.2904921875,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 6292.768200521744,
+                "y": 969.0449936799073
+            }
+        },
+        "C:/2_Artema/Textures/Menu_Textures.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/2_Artema/Textures/Mob_Grib.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/2_Artema/Textures/Textures_levels.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "C:/2_Artema/Textures/Trofey_Texture.tsx": {
+            "dynamicWrapping": false
+        },
+        "C:/2_Artema/level_2.tmx": {
+            "scale": 0.2649609375,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 5683.856700574966,
+                "y": 1334.1589267285863
+            }
+        },
+        "C:/Users/IronFalcon/Desktop/Maps/Textures/Mob_Grib.tsx": {
+            "scaleInDock": 1
+        },
+        "Level_3.tmx": {
+            "scale": 0.2649609375,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 3200.4717676544306,
+                "y": 958.6318738021525
+            }
+        },
+        "безымянный.tmx": {
+            "scale": 0.2649609375,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 3275.9545923632613,
+                "y": 960.5189444198734
+            }
+        }
+    },
+    "last.externalTilesetPath": "C:/2_Artema/Textures",
+    "last.imagePath": "C:/2_Artema/images",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "C:/2_Artema/level_2.tmx",
+        "C:/2_Artema/Level_1/level_1.tmx",
+        "C:/2_Artema/Level_2/level_2.tmx"
+    ],
+    "project": "level_3.tiled-project",
+    "recentFiles": [
+        "C:/2_Artema/level_2.tmx",
+        "C:/2_Artema/Level_2/level_2.tmx",
+        "C:/2_Artema/Level_1/level_1.tmx",
+        "C:/2_Artema/Textures/Textures_levels.tsx",
+        "C:/2_Artema/Level_2.tmx",
+        "Level_3.tmx",
+        "безымянный.tmx"
+    ],
+    "tileset.lastUsedFilter": "Файлы набора тайлов Tiled (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}

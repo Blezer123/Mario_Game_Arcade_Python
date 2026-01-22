@@ -23,16 +23,17 @@ class Mario(arcade.Window):
 
         self.player_facing_direction = 1
 
+        self.jump_key_pressed = False
+
         images_dir = os.path.join(current_dir, "..", "images")
 
         self.cell_size = 16
         self.all_sprites = arcade.SpriteList()
         self.coins = arcade.SpriteList()
-        self.player_texture_dviz_right  = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz_Dviz.png"))
+        self.player_texture_dviz_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz_Dviz.png"))
         self.player_texture_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
         self.player_texture_left = self.player_texture_right.flip_horizontally()
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
-
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -44,7 +45,7 @@ class Mario(arcade.Window):
         self.current_texture = 0
 
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
-                         arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
+                          arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -113,6 +114,10 @@ class Mario(arcade.Window):
     def on_update(self, delta_time: float):
         self.physics_engine.update()
 
+        # Автоматический прыжок
+        if self.jump_key_pressed and self.physics_engine.can_jump():
+            self.player.change_y = PLAYER_JUMP_SPEED
+
         # Сбор монет
 
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
@@ -125,23 +130,20 @@ class Mario(arcade.Window):
         enemy_hit_list += arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
 
         for enemy in enemy_hit_list:
-            # Проверяем, прыгнул ли игрок на врага сверху
 
+            # Проверяем, прыгнул ли игрок на врага сверху
             if self.player.bottom > enemy.center_y:
 
                 # Отталкиваем вверх
-
                 self.player.change_y = BOUNCE_SPEED
 
                 # Удаляем врага
-
                 if enemy in self.Mob_Grib:
                     enemy.remove_from_sprite_lists()
                 elif enemy in self.Mob_Turtle:
                     enemy.remove_from_sprite_lists()
 
             # Столкновение сбоку или снизу - смерть игрока
-
             else:
                 ...
 
@@ -217,25 +219,27 @@ class Mario(arcade.Window):
 
                 self.animation_timer_player = 0
 
-
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.UP:
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.jump_key_pressed = True
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
-        elif key == arcade.key.LEFT:
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.player.change_x = -SPEED
             self.player_facing_direction = -1
             self.player.texture = self.player_texture_left
-        elif key == arcade.key.RIGHT:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player.change_x = SPEED
             self.player_facing_direction = 1
             self.player.texture = self.player_texture_right
 
     def on_key_release(self, key, modifiers):
-        if key == arcade.key.LEFT:
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.jump_key_pressed = False
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             if self.player.change_x < 0:
                 self.player.change_x = 0
-        elif key == arcade.key.RIGHT:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             if self.player.change_x > 0:
                 self.player.change_x = 0
 
