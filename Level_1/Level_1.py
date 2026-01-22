@@ -15,32 +15,40 @@ class Level_1(arcade.Window):
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        tmx_path = os.path.join(current_dir, "..", "Level_1", "level_1.tmx")
+        tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.map_pixel_width = tile_map.width * tile_map.tile_width
         self.map_pixel_height = tile_map.height * tile_map.tile_height
+
+        self.player_facing_direction = 1
 
         images_dir = os.path.join(current_dir, "..", "images")
 
         self.cell_size = 16
         self.all_sprites = arcade.SpriteList()
         self.coins = arcade.SpriteList()
-        self.player_texture = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
+        self.player_texture_dviz_right  = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz_Dviz.png"))
+        self.player_texture_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
+        self.player_texture_left = self.player_texture_right.flip_horizontally()
+        self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
+
+
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
         self.DEAD_ZONE_W = 200
         self.DEAD_ZONE_H = 150
 
         self.animation_timer = 0
+        self.animation_timer_player = 0
         self.current_texture = 0
 
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
-                          arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
+                         arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        tmx_path = os.path.join(current_dir, "..", "Level_1", "level_1.tmx")
+        tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.Ground = tile_map.sprite_lists["Ground"]
@@ -61,10 +69,11 @@ class Level_1(arcade.Window):
 
         self.grid = [[0] * 150 for x in range(50)]
 
-        self.player = arcade.Sprite(self.player_texture, scale=1)
+        self.player = arcade.Sprite(self.player_texture_right, scale=1)
 
         self.player.center_x = 64
         self.player.center_y = 9 * 64
+
         self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
                             self.secret_blocks_grib_life, self.Truba)
 
