@@ -21,10 +21,12 @@ class Level_1(arcade.Window):
         self.map_pixel_width = tile_map.width * tile_map.tile_width
         self.map_pixel_height = tile_map.height * tile_map.tile_height
 
+        images_dir = os.path.join(current_dir, "..", "images")
+
         self.cell_size = 16
         self.all_sprites = arcade.SpriteList()
         self.coins = arcade.SpriteList()
-        self.player_texture = arcade.load_texture(":resources:images/enemies/slimeBlue.png")
+        self.player_texture = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
         self.DEAD_ZONE_W = 200
@@ -33,7 +35,6 @@ class Level_1(arcade.Window):
         self.animation_timer = 0
         self.current_texture = 0
 
-        images_dir = os.path.join(current_dir, "..", "images")
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
                           arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
@@ -45,21 +46,27 @@ class Level_1(arcade.Window):
         self.Ground = tile_map.sprite_lists["Ground"]
         self.Sky = tile_map.sprite_lists["Sky"]
         self.Coins = tile_map.sprite_lists["Coins"]
-        self.Secret = tile_map.sprite_lists["Secret"]
-        self.Mob_Grib = tile_map.sprite_lists["Mobs_Grib"]
-        self.Sky_Blocks = tile_map.sprite_lists["Sky_Blocks"]
-        self.Dead_Blocks = tile_map.sprite_lists["Dead_Blocks"]
-        self.Trofey = tile_map.sprite_lists["Trofey"]
+        self.secret_blocks_grib_life = tile_map.sprite_lists["secret_blocks_grib_life"]
+        self.secret_blocks_coins = tile_map.sprite_lists["secret_blocks_coins"]
+        self.Mob_Grib = tile_map.sprite_lists["Mob_Grib"]
+        self.secret_blocks_grib_baff = tile_map.sprite_lists["secret_blocks_grib_baff"]
+        self.BG = tile_map.sprite_lists["BackGround"]
+        self.Truba = tile_map.sprite_lists["Truba"]
+        self.Mob_Turtle = tile_map.sprite_lists["Mob_Turtle_Red"]
         self.Black = tile_map.sprite_lists["Black"]
+        self.Sky_Blocks = tile_map.sprite_lists["Sky_Blocks"]
+        self.Trofey = tile_map.sprite_lists["Trofey"]
+        self.Dead = tile_map.sprite_lists["Dead"]
+        self.Brick = tile_map.sprite_lists["Brick"]
 
         self.grid = [[0] * 150 for x in range(50)]
 
         self.player = arcade.Sprite(self.player_texture, scale=1)
-        y = 2 * self.cell_size + self.cell_size // 2
-        x = 2 * self.cell_size + self.cell_size // 2
+
         self.player.center_x = 64
         self.player.center_y = 9 * 64
-        self.all_sprites = (self.Ground, self.Sky_Blocks)
+        self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
+                            self.secret_blocks_grib_life, self.Truba)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,

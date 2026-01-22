@@ -15,31 +15,40 @@ class Mario(arcade.Window):
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        tmx_path = os.path.join(current_dir, "..", "Level_3", "Level_3.tmx")
+        tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.map_pixel_width = tile_map.width * tile_map.tile_width
         self.map_pixel_height = tile_map.height * tile_map.tile_height
 
+        self.player_facing_direction = 1
+
+        images_dir = os.path.join(current_dir, "..", "images")
+
         self.cell_size = 16
         self.all_sprites = arcade.SpriteList()
         self.coins = arcade.SpriteList()
-        self.player_texture = arcade.load_texture(":resources:images/enemies/slimeBlue.png")
+        self.player_texture_dviz_right  = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz_Dviz.png"))
+        self.player_texture_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
+        self.player_texture_left = self.player_texture_right.flip_horizontally()
+        self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
+
+
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
         self.DEAD_ZONE_W = 200
         self.DEAD_ZONE_H = 150
 
         self.animation_timer = 0
+        self.animation_timer_player = 0
         self.current_texture = 0
 
-        images_dir = os.path.join(current_dir, "..", "images")
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
                          arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        tmx_path = os.path.join(current_dir, "..", "Level_3", "Level_3.tmx")
+        tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
         self.Ground = tile_map.sprite_lists["Ground"]
@@ -55,15 +64,17 @@ class Mario(arcade.Window):
         self.Black = tile_map.sprite_lists["Black"]
         self.Sky_Blocks = tile_map.sprite_lists["Sky_Blocks"]
         self.Trofey = tile_map.sprite_lists["Trofey"]
+        self.Dead = tile_map.sprite_lists["Dead"]
+        self.Brick = tile_map.sprite_lists["Brick"]
 
         self.grid = [[0] * 150 for x in range(50)]
 
-        self.player = arcade.Sprite(self.player_texture, scale=1)
-        y = 2 * self.cell_size + self.cell_size // 2
-        x = 2 * self.cell_size + self.cell_size // 2
+        self.player = arcade.Sprite(self.player_texture_right, scale=1)
+
         self.player.center_x = 64
         self.player.center_y = 9 * 64
-        self.all_sprites = (self.Ground, self.Sky, self.secret_blocks_grib_baff,
+
+        self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
                             self.secret_blocks_grib_life, self.Truba)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
@@ -81,7 +92,6 @@ class Mario(arcade.Window):
 
     def on_draw(self):
         self.clear()
-
         self.world_camera.use()
 
         self.BG.draw()
@@ -93,7 +103,9 @@ class Mario(arcade.Window):
         self.Mob_Grib.draw()
         self.Mob_Turtle.draw()
         self.Coins.draw()
-
+        self.Brick.draw()
+        self.Black.draw()
+        self.Trofey.draw()
         arcade.draw_sprite(self.player)
 
         self.gui_camera.use()
@@ -190,14 +202,34 @@ class Mario(arcade.Window):
             self.current_texture = 1 - self.current_texture
             self.animation_timer = 0
 
+        if abs(self.player.change_x) > 0:
+            self.animation_timer_player += 1
+            if self.animation_timer_player == 5:
+                # Переключаем между обычной текстурой и текстурой движения
+                if self.player.texture == self.player_texture_right:
+                    self.player.texture = self.player_texture_dviz_right
+                elif self.player.texture == self.player_texture_dviz_right:
+                    self.player.texture = self.player_texture_right
+                elif self.player.texture == self.player_texture_left:
+                    self.player.texture = self.player_texture_dviz_left
+                elif self.player.texture == self.player_texture_dviz_left:
+                    self.player.texture = self.player_texture_left
+
+                self.animation_timer_player = 0
+
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
         elif key == arcade.key.LEFT:
             self.player.change_x = -SPEED
+            self.player_facing_direction = -1
+            self.player.texture = self.player_texture_left
         elif key == arcade.key.RIGHT:
             self.player.change_x = SPEED
+            self.player_facing_direction = 1
+            self.player.texture = self.player_texture_right
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT:
