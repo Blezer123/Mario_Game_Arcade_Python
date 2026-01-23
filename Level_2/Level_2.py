@@ -1,15 +1,15 @@
 import arcade
 import os
-from Main.main import Mario
 
 SPEED = 5
 GRAVITY = 0.5
 PLAYER_JUMP_SPEED = 16
 CAMERA_LERP = 0.1
 ENEMY_SPEED = 1.5
+BOUNCE_SPEED = 10
 
 
-class Level_1(arcade.Window):
+class Level_2(arcade.Window):
     def __init__(self):
         super().__init__(1000, 600, "Mario Game", fullscreen=True)
 
@@ -95,20 +95,26 @@ class Level_1(arcade.Window):
             enemy.speed = ENEMY_SPEED
 
     def on_draw(self):
-        Mario.on_draw(self)
+        from Level_1.Level_1 import Level_1
+        Level_1.on_draw(self)
+
+        self.gui_camera.use()
 
     def on_update(self, delta_time: float):
-        Mario.on_update(self, delta_time)
+        from Level_1.Level_1 import Level_1
+        Level_1.on_update(self, delta_time)
 
     def on_key_press(self, key, modifiers):
-        Mario.on_key_press(self, key, modifiers)
+        from Level_1.Level_1 import Level_1
+        Level_1.on_key_press(self, key, modifiers)
 
     def on_key_release(self, key, modifiers):
-        Mario.on_key_release(self, key, modifiers)
+        from Level_1.Level_1 import Level_1
+        Level_1.on_key_release(self, key, modifiers)
 
 
 def main():
-    game = Level_1()
+    game = Level_2()
     game.setup()
     arcade.run()
 

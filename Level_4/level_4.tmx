@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="140" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="1">
- <tileset firstgid="1" source="../Textures/Menu_Textures.tsx"/>
- <tileset firstgid="626" source="../Textures/Mob_Grib.tsx"/>
- <tileset firstgid="627" source="../Textures/Textures_levels.tsx"/>
- <tileset firstgid="1252" source="../Textures/Mob_Turtle_Red.tsx"/>
+ <tileset firstgid="1" source="../Textures/Mob_Grib.tsx"/>
+ <tileset firstgid="2" source="../Textures/Textures_levels.tsx"/>
  <layer id="1" name="Ground" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1ksOQEAURcHHMthG739tGBLhdRv4VSV3KGlxgggAAAAAAAAA4O3K3QfgNUrohZwSeiGnhF7I2baiFxbdvD65K9c+bbQZ5o3JXbn2aaONXvKO3qdfcfbN0Eve0f1+xdkz/WsvLf9eevlvLy1n14te9LKmF73U0IteauhFLzX0sr8JGG9Spw==
+   eJzt1ksOQEAURcEXlsE2ev9bw5AIr9vAryq5Q0mLE0QAAAAAAAAAAG9X7j4Ar1FCL+SU0As5JfRCzrYVvbDo5vXJXbn2aaPNMG9M7sq1Txtt9JJ39D79irNvhl7yju73K86e6V97afn30st/e2k5u170opc1veilhl70UkMveqmhl/1Nvx9V+g==
   </data>
  </layer>
  <layer id="19" name="Sky_Blocks" width="140" height="30">
@@ -16,37 +14,37 @@
  </layer>
  <layer id="3" name="Coins" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1rENACAIAEEXdP917O0kRCTe9TYiH8c4NwNngDx2EOBNWX3WeYA+NDuPu/xL1by9M8hlpwDiNBQAgM78ZwFq7R3WZQAAAACAuxYIZAPq
+   eJzt1rENACAIAEEndP9x7O0kRCTe9TYiH8c4NwNngDx2EOBNWX3WeYA+NDuPu/xL1by9M8hlpwDiNBQAgM78ZwFq7R3WZQAAAACAuxZQxgP3
   </data>
  </layer>
  <layer id="11" name="secret_blocks_grip_baff" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2UENAAAIxLBTiH85mCABklbB/ksAAACAq2o7AAAAAAAAAAb5XwAAAAAAfNZySgCd
+   eJzt2UENAAAIxLBziH83mCABklbB/ksAAACAq2o7AAAAAAAAAAb5XwAAAAAAfNa7GgCf
   </data>
  </layer>
  <layer id="12" name="secret_blocks_coins" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1zENAAAIAzAU4l8OBjj4gKRVsOzaIgDYltsBjtMPAAAAHX8RAAD4wHcBAKbsBgAAAAAAuK8AMYUBhw==
+   eJzt1zENAAAIAzAc4t8NBjj4gKRVsOzaIgDYltsBjtMPAAAAHX8RAAD4wHcBAKbsBgAAAAAAuK8ADTgBjA==
   </data>
  </layer>
  <layer id="13" name="secret_blocks_grip_life" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAIA6AltH8cv1XQAxKQAAAAH811AAAAAAAAAAAAAAAAAIBasugATw==
+   eJztzjEBAAAIA6A1tH8bv1XQAxKQAAAAH811AAAAAAAAAAAAAAAAAIBa6NwAUA==
   </data>
  </layer>
  <layer id="10" name="Sky" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1cERgCAMBMA0Yv9t+vTjKKIIhN0CIFySISJii3a+OPvqjJa1/2H2+lf0pmf6nYdetidjWjBX5e6ykiXkYZ/nol9kZK7r1OS2QtZP3rhCHr3JGHKY8c8pub93jXDGXMI4RtnHUeoAAAAAAAAAAA471P4DEA==
+   eJzt1cERgCAMBMBUYv9l+vTjKKIIhN0CIFySISJii3a+OPvqjJa1/2H2+lf0pmf6nYdetidjWjBX5e6ykiXkYZ/nol9kZK7r1OS2QtZP3rhCHr3JGHKY8c8pub93jXDGXMI4RtnHUeoAAAAAAAAAAA47KZADKw==
   </data>
  </layer>
  <layer id="6" name="Dead" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzbEJACAMBEDBId3GORzXWlCCmMLiDtI8yacUAAAAAAAAAAAAAAAAAAAA4FWr69zmY5NndJ92e9CRYfezh1d/mnV5D28=
+   eJztzbENACAIBEA2dw4XdA57gxqjhcVdQvOBJwIAAAAAAAAAAAAAAAAAAAC41YY5zWuSv+ie7ZZNxwvZz7K8+FcH8DIkOw==
   </data>
  </layer>
  <layer id="4" name="Truba" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1UEKgCAQBVA3dYy6aWdPaJvBgDVW74GbWciH+WIpAAAAAAAAAADAmS07APBLUz1zdogyTg6uLfWs2SHKODk4tN5va093vfdoDnK09hGdP52DHPpCRI++tP6SyFxf3qFHXzLuIIe+EKEvROgLEfpChL58yw7u2hDO
+   eJzt1UEKgCAQBVBXdYy6aVdPaJvBgDVW74GbWciH+WIpAAAAAAAAAADAmS07APBLUz1zdogyTg6uLfWs2SHKODk4tN5va093vfdoDnK09hGdP52DHPpCRI++tP6SyFxf3qFHXzLuIIe+EKEvROgLEfpChL58yw6RQxFl
   </data>
  </layer>
  <layer id="14" name="BackGround" width="140" height="30">
@@ -56,27 +54,27 @@
  </layer>
  <layer id="15" name="Mob_Turtle_Red" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2MEJADAIA0Af7j9lB+lTOkEo3k2QR0BJFQDAbqfTCQAgww3kNzoLAAAAAMNexgZ6DgCQ5ycDAACA1wUogAVx
+   eJztwYEAAAAAw6D5U9/gBFUBAAAAAAAAAAAAAAAAAAAA8AxBoAAB
   </data>
  </layer>
  <layer id="16" name="Black" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0jENwDAQwMBX+RMMjSAoBk/54U4yA8+wyf1mzuLYxS8UfqHwC4VfKPxC4RcKv1D4hcIvFH6h8AuFXyj8QuEXCr9Q+IXCLxR+AQAAAAAAXvsBvKuMIg==
+   eJzt0kENACAQwDDkYgPnYGEv7tEmc7C1mOS89uCYxS8UfqHwC4VfKPxC4RcKv1D4hcIvFH6h8AuFXyj8QuEXCr9Q+IXCLxR+AQAAAAAAfrtvhDar
   </data>
  </layer>
  <layer id="17" name="Trofey" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzkEJAAAIBLDD/pjZDoL42RIsAQAAAAAAAADY6/oeAAAAAAAAAADcG+bsAJE=
+   eJztzjEBAAAIA6AVsX9NO+zQBxKQAAAAAAAAAAD05jsAAAAAAAAAAHBgAQLwAB4=
   </data>
  </layer>
  <layer id="18" name="Brick" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2EsOgCAMBUDv5P3v5lr8JCgBWmYS19JHQwPbBsxoL77synpXqJmzUXufsfe+1pMpg8wy9mwUd9lnyT9rXa2MzKflv+0v0Tmn+nmaefLvpyZr+3Olh9uLkt0MbwsRRV8/86s9h3uf2X/mhBnDaPoO+lr5rS7SWgFW9Taj3F0AAAAAAADaOgCt7xrm
+   eJzt2EsOgCAMBUAP5f3P5lr8JCgBWmYS19JHQwPbBsxoL77synpXqJmzUXufsfe+1pMpg8wy9mwUd9lnyT9rXa2MzKflv+0v0Tmn+nmaefLvpyZr+3Olh9uLkt0MbwsRRV8/86s9h3uf2X/mhBnDaPoO+lr5rS7SWgFW9Taj3F0AAAAAAADaOgAFbhtt
   </data>
  </layer>
  <layer id="2" name="Mob_Grib" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1zEKACAIBVDpyN1/aG1rMLDkvRMo6BcjAHqao7oCgHqyEICdu0A3Zhqg1us5nKnv9d4AuEvuAwAAwN/2396fDzl2CAAAAM4WdGsE/Q==
+   eJzt1UEKACEIBdC6/6VbBgMR0cCo897KpYJ+WwOoqX/dAJBG5byoPBsA555/wZ8gGzsMEEv0HL7pL/psALxL7gOQlR/GX9h1AHb6ogbOrW7IbQEAAMA0AMQaABI=
   </data>
  </layer>
 </map>

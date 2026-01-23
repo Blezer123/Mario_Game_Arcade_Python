@@ -1,6 +1,5 @@
 import arcade
 import os
-from Level_1 import Level_1
 
 ENEMY_SPEED = 1
 
@@ -14,6 +13,7 @@ class Menu(arcade.Window):
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # Загрузка карты
+
         tmx_path = os.path.join(current_dir, "Menu_Map.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
@@ -25,10 +25,12 @@ class Menu(arcade.Window):
         self.Block = tile_map.sprite_lists["Block"]
 
         # Загрузка текстур
+
         images_dir = os.path.join(current_dir, "..", "images")
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
                          arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
         # Загрузка спрайта индикатора
+
         self.indicator_sprite = arcade.Sprite(
             os.path.join(images_dir, "Grib_Baff.png"),
             scale=0.6
@@ -183,6 +185,8 @@ class Menu(arcade.Window):
                 self.animation_timer = 0
 
     def on_key_press(self, key, modifiers):
+        from Menu_Levels import Menu_Levels
+
         if key == arcade.key.UP:
             self.selected_option = 1
         elif key == arcade.key.DOWN:
@@ -190,10 +194,12 @@ class Menu(arcade.Window):
         elif key == arcade.key.ENTER:
             if self.selected_option == 1:
                 # Закрываем меню
+
                 self.close()
 
                 # Запускаем игру
-                game = Level_1.Level_1()
+
+                game = Menu_Levels()
                 game.setup()
                 arcade.run()
 
