@@ -3,6 +3,7 @@
  <tileset firstgid="1" source="../Textures/Menu_Textures.tsx"/>
  <tileset firstgid="626" source="../Textures/Mob_Grib.tsx"/>
  <tileset firstgid="627" source="../Textures/Textures_levels.tsx"/>
+ <tileset firstgid="1252" source="../Textures/Mob_Turtle_Red.tsx"/>
  <layer id="1" name="Ground" width="140" height="30">
   <data encoding="base64" compression="zlib">
    eJzt1ksOQEAURcHHMthG739tGBLhdRv4VSV3KGlxgggAAAAAAAAA4O3K3QfgNUrohZwSeiGnhF7I2baiFxbdvD65K9c+bbQZ5o3JXbn2aaONXvKO3qdfcfbN0Eve0f1+xdkz/WsvLf9eevlvLy1n14te9LKmF73U0IteauhFLzX0sr8JGG9Spw==
@@ -55,7 +56,7 @@
  </layer>
  <layer id="15" name="Mob_Turtle_Red" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwYEAAAAAw6D5U9/gBFUBAAAAAAAAAAAAAAAAAAAA8AxBoAAB
+   eJzt2MEJADAIA0Af7j9lB+lTOkEo3k2QR0BJFQDAbqfTCQAgww3kNzoLAAAAAMNexgZ6DgCQ5ycDAACA1wUogAVx
   </data>
  </layer>
  <layer id="16" name="Black" width="140" height="30">
@@ -75,7 +76,7 @@
  </layer>
  <layer id="2" name="Mob_Grib" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1UEKgDAMBMDik/v/g0elICItNIkzL0gg2W0NoKZ+7J4AyKJyXlTeDYDvxl7QE2TjhgFiiZ7DM/NF3w2AteQ+AFnpMP7CrQPw5t4VegPmPP2Q3wIAAIDLCWQ7B7U=
+   eJzt1zEKACAIBVDpyN1/aG1rMLDkvRMo6BcjAHqao7oCgHqyEICdu0A3Zhqg1us5nKnv9d4AuEvuAwAAwN/2396fDzl2CAAAAM4WdGsE/Q==
   </data>
  </layer>
 </map>
