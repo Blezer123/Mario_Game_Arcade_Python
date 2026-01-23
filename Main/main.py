@@ -23,6 +23,10 @@ class Mario(arcade.Window):
 
         self.player_facing_direction = 1
 
+        self.timer = 0
+
+        self.player_is_dead = False
+
         images_dir = os.path.join(current_dir, "..", "images")
 
         self.cell_size = 16
@@ -30,6 +34,7 @@ class Mario(arcade.Window):
         self.coins = arcade.SpriteList()
         self.player_texture_dviz_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz_Dviz.png"))
         self.player_texture_right = arcade.load_texture(os.path.join(images_dir, "Small_Perzonaz.png"))
+        self.player_texture_dead = arcade.load_texture(os.path.join(images_dir, "Small_Personaz_Dead.png"))
         self.player_texture_left = self.player_texture_right.flip_horizontally()
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
 
@@ -111,6 +116,17 @@ class Mario(arcade.Window):
 
     def on_update(self, delta_time: float):
         self.physics_engine.update()
+
+        # Смерть игрока
+
+        if self.player_is_dead:
+            self.timer += 1
+            if self.timer > 180:
+                self.setup()
+                self.player_is_dead = False
+                self.timer = 0
+            return
+
         # Сбор монет
 
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
@@ -120,7 +136,7 @@ class Mario(arcade.Window):
         # Проверка столкновения с врагами
 
         enemy_hit_list = arcade.check_for_collision_with_list(self.player, self.Mob_Grib)
-        enemy_hit_list += arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
+        enemy_hit_list_turtle = arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
 
         for enemy in enemy_hit_list:
             # Проверяем, прыгнул ли игрок на врага сверху
@@ -138,7 +154,8 @@ class Mario(arcade.Window):
             # Столкновение сбоку или снизу - смерть игрока
 
             else:
-                ...
+                self.player_is_dead = True
+                self.player.texture = self.player_texture_dead
 
         if self.player.center_x < 0:
             self.player.center_x = 0
@@ -214,16 +231,10 @@ class Mario(arcade.Window):
                     self.player.texture = self.player_texture_left
 
                 self.animation_timer_player = 0
-        else:
-            # Когда игрок стоит возвращаем основную текстуру
-
-            if self.player_facing_direction == 1:
-                self.player.texture = self.player_texture_right
-            else:
-                self.player.texture = self.player_texture_left
-            self.animation_timer_player = 0
 
     def on_key_press(self, key, modifiers):
+        if self.player_is_dead:
+            return
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
