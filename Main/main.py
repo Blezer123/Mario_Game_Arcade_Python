@@ -23,8 +23,6 @@ class Mario(arcade.Window):
 
         self.player_facing_direction = 1
 
-        self.jump_key_pressed = False
-
         images_dir = os.path.join(current_dir, "..", "images")
 
         self.cell_size = 16
@@ -113,11 +111,6 @@ class Mario(arcade.Window):
 
     def on_update(self, delta_time: float):
         self.physics_engine.update()
-
-        # Автоматический прыжок
-        if self.jump_key_pressed and self.physics_engine.can_jump():
-            self.player.change_y = PLAYER_JUMP_SPEED
-
         # Сбор монет
 
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
@@ -130,20 +123,20 @@ class Mario(arcade.Window):
         enemy_hit_list += arcade.check_for_collision_with_list(self.player, self.Mob_Turtle)
 
         for enemy in enemy_hit_list:
-
             # Проверяем, прыгнул ли игрок на врага сверху
-            if self.player.bottom > enemy.center_y:
 
+            if self.player.bottom > enemy.center_y:
                 # Отталкиваем вверх
                 self.player.change_y = BOUNCE_SPEED
 
                 # Удаляем врага
+
                 if enemy in self.Mob_Grib:
                     enemy.remove_from_sprite_lists()
                 elif enemy in self.Mob_Turtle:
                     enemy.remove_from_sprite_lists()
-
             # Столкновение сбоку или снизу - смерть игрока
+
             else:
                 ...
 
@@ -196,9 +189,11 @@ class Mario(arcade.Window):
             enemy.center_x += enemy.change_x
 
             # Анимация гриба
+
             enemy.texture = (self.textures[0][self.current_texture])
 
         # Обновление таймера анимации
+
         self.animation_timer += 1
         if self.animation_timer == 10:
             self.current_texture = 1 - self.current_texture
@@ -208,6 +203,7 @@ class Mario(arcade.Window):
             self.animation_timer_player += 1
             if self.animation_timer_player == 5:
                 # Переключаем между обычной текстурой и текстурой движения
+
                 if self.player.texture == self.player_texture_right:
                     self.player.texture = self.player_texture_dviz_right
                 elif self.player.texture == self.player_texture_dviz_right:
@@ -218,28 +214,33 @@ class Mario(arcade.Window):
                     self.player.texture = self.player_texture_left
 
                 self.animation_timer_player = 0
+        else:
+            # Когда игрок стоит возвращаем основную текстуру
+
+            if self.player_facing_direction == 1:
+                self.player.texture = self.player_texture_right
+            else:
+                self.player.texture = self.player_texture_left
+            self.animation_timer_player = 0
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.UP or key == arcade.key.W:
-            self.jump_key_pressed = True
+        if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player.change_y = PLAYER_JUMP_SPEED
-        elif key == arcade.key.LEFT or key == arcade.key.A:
+        elif key == arcade.key.LEFT:
             self.player.change_x = -SPEED
             self.player_facing_direction = -1
             self.player.texture = self.player_texture_left
-        elif key == arcade.key.RIGHT or key == arcade.key.D:
+        elif key == arcade.key.RIGHT:
             self.player.change_x = SPEED
             self.player_facing_direction = 1
             self.player.texture = self.player_texture_right
 
     def on_key_release(self, key, modifiers):
-        if key == arcade.key.UP or key == arcade.key.W:
-            self.jump_key_pressed = False
-        elif key == arcade.key.LEFT or key == arcade.key.A:
+        if key == arcade.key.LEFT:
             if self.player.change_x < 0:
                 self.player.change_x = 0
-        elif key == arcade.key.RIGHT or key == arcade.key.D:
+        elif key == arcade.key.RIGHT:
             if self.player.change_x > 0:
                 self.player.change_x = 0
 
