@@ -79,7 +79,7 @@ class Mario(arcade.Window):
         self.player.center_y = 9 * 64
 
         self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
-                            self.secret_blocks_grib_life, self.Truba)
+                            self.secret_blocks_grib_life, self.Truba, self.Sky_Blocks)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,
@@ -110,6 +110,7 @@ class Mario(arcade.Window):
         self.Brick.draw()
         self.Black.draw()
         self.Trofey.draw()
+        self.Sky_Blocks.draw()
         arcade.draw_sprite(self.player)
 
         self.gui_camera.use()
