@@ -54,6 +54,9 @@ class Level_1(arcade.Window):
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
                           arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
 
+        self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
+                          arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
+
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
@@ -97,6 +100,11 @@ class Level_1(arcade.Window):
             enemy.patrol_distance = 0
             enemy.direction = 1
             enemy.speed = ENEMY_SPEED
+
+        for enemy_turtle in self.Mob_Turtle:
+            enemy_turtle.patrol_distance = 0
+            enemy_turtle.direction = 1
+            enemy_turtle.speed = ENEMY_SPEED
 
     def on_draw(self):
         self.clear()
@@ -146,6 +154,21 @@ class Level_1(arcade.Window):
                     enemy.remove_from_sprite_lists()
                 elif enemy in self.Mob_Turtle:
                     enemy.remove_from_sprite_lists()
+
+        for enemy_turtle in enemy_hit_list_turtle:
+            # Проверяем, прыгнул ли игрок на врага сверху
+
+            if self.player.bottom > enemy_turtle.center_y:
+                # Отталкиваем вверх
+                self.player.change_y = BOUNCE_SPEED
+
+                # Удаляем врага
+
+                if enemy_turtle in self.Mob_Grib:
+                    enemy_turtle.remove_from_sprite_lists()
+                elif enemy_turtle in self.Mob_Turtle:
+                    enemy_turtle.remove_from_sprite_lists()
+
             # Столкновение сбоку или снизу - смерть игрока
 
             else:
@@ -189,6 +212,8 @@ class Level_1(arcade.Window):
         self.cam_target = (smooth_x, smooth_y)
         self.world_camera.position = (self.cam_target[0], self.cam_target[1])
 
+        # Анимация гриба
+
         for enemy in self.Mob_Grib:
             enemy.change_x = enemy.speed * enemy.direction
             enemy.patrol_distance += enemy.change_x
@@ -200,16 +225,36 @@ class Level_1(arcade.Window):
 
             enemy.center_x += enemy.change_x
 
-            # Анимация гриба
-
             enemy.texture = (self.textures[0][self.current_texture])
 
         # Обновление таймера анимации
-
         self.animation_timer += 1
         if self.animation_timer == 10:
             self.current_texture = 1 - self.current_texture
             self.animation_timer = 0
+
+        # Анимация черепахи
+
+        for enemy_turtle in self.Mob_Turtle:
+            enemy_turtle.change_x = enemy_turtle.speed * enemy_turtle.direction
+            enemy_turtle.patrol_distance += enemy_turtle.change_x
+
+            if enemy_turtle.patrol_distance >= 100:
+                enemy_turtle.direction = -1
+            elif enemy_turtle.patrol_distance <= -100:
+                enemy_turtle.direction = 1
+
+            enemy_turtle.center_x += enemy_turtle.change_x
+
+            # Анимация черепахи с учетом направления
+
+            if enemy_turtle.direction == -1:
+                enemy_turtle.texture = self.textures_turtle[0][self.current_texture]
+            else:
+                texture = self.textures_turtle[0][self.current_texture]
+                enemy_turtle.texture = texture.flip_horizontally()
+
+        # Анимация игрока
 
         if abs(self.player.change_x) > 0:
             self.animation_timer_player += 1
