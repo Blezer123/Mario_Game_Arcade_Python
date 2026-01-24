@@ -25,7 +25,11 @@ class Level_1(arcade.Window):
 
         self.timer = 0
 
+        self.timer_pause = 0
+
         self.player_is_dead = False
+
+        self.game_manager = None
 
         images_dir = os.path.join(current_dir, "..", "images")
 
@@ -117,20 +121,6 @@ class Level_1(arcade.Window):
 
     def on_update(self, delta_time: float):
         self.physics_engine.update()
-        #
-        # from Menu.Menu import Menu
-        #
-        # # Смерть игрока
-        #
-        # if self.player_is_dead:
-        #     self.timer += 1
-        #     if self.timer > 180:
-        #         self.player_is_dead = False
-        #         self.timer = 0
-        #         game = Menu()
-        #         game.setup()
-        #         arcade.run()
-        #     return
 
         # Сбор монет
 
@@ -241,6 +231,25 @@ class Level_1(arcade.Window):
 
         if trofey_hit:
             ...
+
+        # Смерть игрока
+
+        if self.player_is_dead:
+            self.timer += 1
+            if self.timer > 180:
+                import subprocess
+                import sys
+
+                # Закрываем окно
+                self.close()
+
+                # Получаем путь к Menu.py
+
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                parent_dir = os.path.dirname(current_dir)
+                menu_path = os.path.join(parent_dir, "Menu", "Menu.py")
+                subprocess.Popen([sys.executable, menu_path])
+            return
 
     def on_key_press(self, key, modifiers):
         if self.player_is_dead:

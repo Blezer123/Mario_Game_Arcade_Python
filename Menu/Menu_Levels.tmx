@@ -1,55 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="12" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="64" tileheight="64" infinite="0" nextlayerid="10" nextobjectid="1">
  <tileset firstgid="1" source="../Textures/Menu_Textures_Levels.tsx"/>
- <tileset firstgid="50" source="../Textures/Textures_levels.tsx"/>
- <layer id="1" name="Back_Ground" width="40" height="21">
+ <layer id="1" name="Back_Ground" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztwwENAAAAwqDbv7RFYGPVVFVV7Z1rA0k=
+   eJztw0ENAAAMA6Grf9MTsS8krJqqqqo+H+uHA5k=
   </data>
  </layer>
- <layer id="2" name="Truba" width="40" height="21">
+ <layer id="2" name="Trees" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJzt1LENwCAMRFFPRcYIIzNaTOEmEgIscXcFX7LcvsauZu31qclth8u6Hp8i6EO5dn1o16qP5Zr52K6RT8UVqboiVdftxsxvot+GXOHyn9J/i0x/l4pv5GL7Zi6Wb9WF9u26UL6sC+XLumJ/FlJ1iQ==
+   eJxjYBgF1AJMQMxMQ/WDHdDDP7Syg5C5tLAXn5nUsI+e6Wsg0zK17SbGvMEYP8MpDkbBKBgF9AXUrgOHWpmAzb209PNwq5+HWnyDwGBw82BwA60AAPWZAIg=
   </data>
  </layer>
- <layer id="9" name="Spawn" width="40" height="21">
+ <layer id="9" name="Spawn" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7DJwL9SRIyEp1XQBABuzHcAAEoLsEAAGQ==
+   eJztzjENAAAIA7Ad+NeMg72EpFXQBACgm+sAAC8sJyAABQ==
   </data>
  </layer>
- <layer id="3" name="Dorozki" width="40" height="21">
+ <layer id="3" name="Dorozki" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztw7ENAAAIA6CO/n+xPzQODpCQAMCNeRQAGgsySQEZ
+   eJztw6ENAAAMAjDk/r94J2ARbdIEAKC7oQBseoR6ARk=
   </data>
  </layer>
- <layer id="4" name="Level_1" width="40" height="21">
+ <layer id="4" name="Level_1" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7C9+DeMhT2Ep1XQBADuzXcAAAoLSVAACg==
+   eJztziEBAAAIA7Bb+hemww2ILcESAIDOXAcAeGUBRTgACg==
   </data>
  </layer>
- <layer id="5" name="Level_2" width="40" height="21">
+ <layer id="5" name="Level_2" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAMAiDv9Q88W/hAAhIA2Lt1AADqAU7AAAs=
+   eJztzjEBAAAIA6Dd9g9siukDCUgAAHrmOwDAmQVJ6AAL
   </data>
  </layer>
- <layer id="6" name="Level_3" width="40" height="21">
+ <layer id="6" name="Level_3" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7D9+PeLjJHQKmgCAPdNOwDACwtT8AAM
+   eJztziEBAAAMAjD8+/d9CARmS7AEAGDv1gEAag9OJAAM
   </data>
  </layer>
- <layer id="7" name="Level_4" width="40" height="21">
+ <layer id="7" name="Level_4" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztzgENAAAIA6AHsH9eY3w6SEACAPdNOwDACwtY4AAN
+   eJztzjEBAAAIA6AFsH9eI+zUAxKQAAD8N9cBAKoFUnAADQ==
   </data>
  </layer>
- <layer id="8" name="Inviz" width="40" height="21">
+ <layer id="8" name="Inviz" width="40" height="23">
   <data encoding="base64" compression="zlib">
-   eJztkjEKQCEMQzt0d3X1/pd0UShBxaH8HyEPsoiQZ6uZEEKIF6hk8ZHox4SHNPt/XphIyX16Omx+6MPmh8w/uMoOvOfJuek8+X3JbnYMrtjN5ojdbXHO4se04w58dg73
-  </data>
- </layer>
- <layer id="11" name="Trees" width="40" height="21">
-  <data encoding="base64" compression="zlib">
-   eJztlVEKACAIQ6Xuf+c6QIlimxI+6FM3Z5EIlrHPJNSgYHu56VXKJEKVOZA+Tr01vSqZvMQ6U2R2Sy0q2x939iO9Jx1PPt4sM98nSqPCfWL/XRk+GDD9d1Y5vaMs+LUAkg==
+   eJzt0iEOACAMQ1HEPGfg/pfEIJalhCAIX/QlNZg1Y62ZmZndixWqSBkpAUnWgan9SFQ/WrJ6gyq7e311t4qaS3Da3c+udTatY509xDulH/WP7d4Em9QNkA==
   </data>
  </layer>
 </map>
