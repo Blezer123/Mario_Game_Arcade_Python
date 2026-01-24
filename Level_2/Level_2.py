@@ -25,7 +25,11 @@ class Level_2(arcade.Window):
 
         self.timer = 0
 
+        self.timer_pause = 0
+
         self.player_is_dead = False
+
+        self.game_manager = None
 
         images_dir = os.path.join(current_dir, "..", "images")
 
@@ -49,6 +53,9 @@ class Level_2(arcade.Window):
 
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
                           arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
+
+        self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
+                          arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -93,6 +100,11 @@ class Level_2(arcade.Window):
             enemy.patrol_distance = 0
             enemy.direction = 1
             enemy.speed = ENEMY_SPEED
+
+        for enemy_turtle in self.Mob_Turtle:
+            enemy_turtle.patrol_distance = 0
+            enemy_turtle.direction = 1
+            enemy_turtle.speed = ENEMY_SPEED
 
     def on_draw(self):
         from Level_1.Level_1 import Level_1

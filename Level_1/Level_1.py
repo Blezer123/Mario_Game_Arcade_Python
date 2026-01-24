@@ -155,6 +155,10 @@ class Level_1(arcade.Window):
                 elif enemy in self.Mob_Turtle:
                     enemy.remove_from_sprite_lists()
 
+            else:
+                self.player_is_dead = True
+                self.player.texture = self.player_texture_dead
+
         for enemy_turtle in enemy_hit_list_turtle:
             # Проверяем, прыгнул ли игрок на врага сверху
 
