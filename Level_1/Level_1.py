@@ -31,6 +31,8 @@ class Level_1(arcade.Window):
 
         self.game_manager = None
 
+        self.timer_block = 0
+
         images_dir = os.path.join(current_dir, "..", "images")
 
         self.cell_size = 16
@@ -57,10 +59,22 @@ class Level_1(arcade.Window):
         self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
                           arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
 
+        self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
+
+        self.font_name = "Super Mario Bros. 2"
+        self.selected_option = 1
+
+        self.x = self.width // 2
+
+        self.Coins_Sum = 0
+
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
+
+        self.screen_width = self.width
+        self.screen_height = self.height
 
         self.Ground = tile_map.sprite_lists["Ground"]
         self.Sky = tile_map.sprite_lists["Sky"]
@@ -78,7 +92,18 @@ class Level_1(arcade.Window):
         self.Dead = tile_map.sprite_lists["Dead"]
         self.Brick = tile_map.sprite_lists["Brick"]
 
-        self.grid = [[0] * 150 for x in range(50)]
+        self.secret_blocks_coins_check = 0
+        self.secret_blocks_grib_life_check = 0
+        self.secret_blocks_grib_baff_check = 0
+
+        for block_coins in self.secret_blocks_coins:
+            block_coins.original_y = block_coins.center_y
+
+        for block_baff in self.secret_blocks_grib_baff:
+            block_baff.original_y = block_baff.center_y
+
+        for block_life in self.secret_blocks_grib_life:
+            block_life.original_y = block_life.center_y
 
         self.player = arcade.Sprite(self.player_texture_right, scale=1)
 
@@ -86,7 +111,7 @@ class Level_1(arcade.Window):
         self.player.center_y = 9 * 64
 
         self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
-                            self.secret_blocks_grib_life, self.Truba, self.Sky_Blocks)
+                            self.secret_blocks_grib_life, self.Truba, self.Sky_Blocks, self.secret_blocks_coins)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,
@@ -110,12 +135,15 @@ class Level_1(arcade.Window):
         self.clear()
         self.world_camera.use()
 
+        option1_y = self.screen_height // 2 - 500
+
         self.BG.draw()
         self.Ground.draw()
         self.Sky.draw()
         self.Truba.draw()
         self.secret_blocks_grib_baff.draw()
         self.secret_blocks_grib_life.draw()
+        self.secret_blocks_coins.draw()
         self.Mob_Grib.draw()
         self.Mob_Turtle.draw()
         self.Coins.draw()
@@ -127,6 +155,29 @@ class Level_1(arcade.Window):
 
         self.gui_camera.use()
 
+        # текст 2 с обводкой
+
+        arcade.draw_text(
+            f"Coins: {self.Coins_Sum}",
+            self.x + 800,
+            option1_y,
+            arcade.color.BLACK,
+            40,
+            font_name=self.font_name,
+            anchor_x="left",
+            anchor_y="center"
+        )
+        arcade.draw_text(
+            f"Coins: {self.Coins_Sum}",
+            self.x + 807,
+            option1_y,
+            arcade.color.WHITE,
+            40,
+            font_name=self.font_name,
+            anchor_x="left",
+            anchor_y="center"
+        )
+
     def on_update(self, delta_time: float):
         self.physics_engine.update()
 
@@ -135,6 +186,7 @@ class Level_1(arcade.Window):
         coins_hit_list = arcade.check_for_collision_with_list(self.player, self.Coins)
         for coin in coins_hit_list:
             coin.remove_from_sprite_lists()
+            self.Coins_Sum += 1
 
         # Проверка столкновения с врагами
 
@@ -299,6 +351,56 @@ class Level_1(arcade.Window):
                 menu_path = os.path.join(parent_dir, "Menu", "Menu.py")
                 subprocess.Popen([sys.executable, menu_path])
             return
+
+        # Обработка на столкновение игрока и нижней части блока
+
+        for block_coins in self.secret_blocks_coins:
+
+            if self.player.top >= block_coins.bottom - 10 and self.player.top <= block_coins.bottom + 10 and \
+                    self.player.left >= block_coins.left - 20 and \
+                    self.player.right <= block_coins.right + 20 and self.player.bottom < block_coins.top:
+                if self.secret_blocks_grib_baff_check == 0:
+                    block_coins.center_y += 5
+                    self.secret_blocks_grib_baff_check = 1
+
+                else:
+                    block_coins.texture = self.texture_block
+                    block_coins.center_y += 5
+
+            else:
+                block_coins.center_y = block_coins.original_y
+
+        for block_baff in self.secret_blocks_grib_baff:
+
+            if self.player.top >= block_baff.bottom - 10 and self.player.top <= block_baff.bottom + 10 and \
+                    self.player.left >= block_baff.left - 20 and \
+                    self.player.right <= block_baff.right + 20 and self.player.bottom < block_baff.top:
+                if self.secret_blocks_grib_baff_check == 0:
+                    block_baff.center_y += 5
+                    self.secret_blocks_grib_baff_check = 1
+
+                else:
+                    block_baff.texture = self.texture_block
+                    block_baff.center_y += 5
+
+            else:
+                block_baff.center_y = block_baff.original_y
+
+        for block_life in self.secret_blocks_grib_life:
+
+            if self.player.top >= block_life.bottom - 10 and self.player.top <= block_life.bottom + 10 and \
+                    self.player.left >= block_life.left - 20 and \
+                    self.player.right <= block_life.right + 20 and self.player.bottom < block_life.top:
+                if self.secret_blocks_grib_life_check == 0:
+                    block_life.center_y += 5
+                    self.secret_blocks_grib_life_check = 1
+
+                else:
+                    block_life.texture = self.texture_block
+                    block_life.center_y += 5
+
+            else:
+                block_life.center_y = block_life.original_y
 
     def on_key_press(self, key, modifiers):
         if self.player_is_dead:

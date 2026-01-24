@@ -88,8 +88,6 @@ class Menu(arcade.Window):
             anchor_y="center"
         )
 
-        # текст Player с обводкой
-
         arcade.draw_text(
             "Player",
             self.x,
@@ -140,8 +138,6 @@ class Menu(arcade.Window):
             anchor_x="center",
             anchor_y="center"
         )
-
-        # текст Players с обводкой
 
         arcade.draw_text(
             "Players",

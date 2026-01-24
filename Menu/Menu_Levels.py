@@ -2,12 +2,18 @@ import arcade
 import os
 
 SPEED = 5
+CAMERA_LERP = 0.1
 
 
 class Menu_Levels(arcade.Window):
     def __init__(self):
         super().__init__(1000, 600, "Mario Menu_Levels", fullscreen=True)
         self.selected_level = None
+
+        self.world_camera = arcade.camera.Camera2D()
+        self.gui_camera = arcade.camera.Camera2D()
+        self.DEAD_ZONE_W = 200
+        self.DEAD_ZONE_H = 150
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +34,10 @@ class Menu_Levels(arcade.Window):
         self.Spawn = tile_map.sprite_lists["Spawn"]
         self.Trees = tile_map.sprite_lists["Trees"]
         self.Back_Ground = tile_map.sprite_lists["Back_Ground"]
+        self.Truba = tile_map.sprite_lists["Truba"]
+
+        self.map_pixel_width = tile_map.width * tile_map.tile_width
+        self.map_pixel_height = tile_map.height * tile_map.tile_height
 
         images_dir = os.path.join(current_dir, "..", "images")
 
@@ -73,6 +83,7 @@ class Menu_Levels(arcade.Window):
         self.Spawn.draw()
         self.Trees.draw()
         self.Trees.draw()
+        self.Truba.draw()
 
         arcade.draw_sprite(self.player)
 
@@ -101,6 +112,35 @@ class Menu_Levels(arcade.Window):
                     self.player.texture = self.player_texture_left
 
                 self.animation_timer_player = 0
+
+        cam_x, cam_y = self.world_camera.position
+        dz_left = cam_x - self.DEAD_ZONE_W // 2
+        dz_right = cam_x + self.DEAD_ZONE_W // 2
+        dz_bottom = cam_y - self.DEAD_ZONE_H // 2
+        dz_top = cam_y + self.DEAD_ZONE_H // 2
+
+        px, py = self.player.center_x, self.player.center_y
+        target_x, target_y = cam_x, cam_y
+
+        if px < dz_left:
+            target_x = px + self.DEAD_ZONE_W // 2
+        elif px > dz_right:
+            target_x = px - self.DEAD_ZONE_W // 2
+        if py < dz_bottom:
+            target_y = py + self.DEAD_ZONE_H // 2
+        elif py > dz_top:
+            target_y = py - self.DEAD_ZONE_H // 2
+
+        half_w = self.world_camera.viewport_width / 2
+        half_h = self.world_camera.viewport_height / 2
+        target_x = max(half_w, min(self.map_pixel_width - half_w, target_x))
+        target_y = max(half_h, min(self.map_pixel_height - half_h, target_y))
+
+        smooth_x = (1 - CAMERA_LERP) * cam_x + CAMERA_LERP * target_x
+        smooth_y = (1 - CAMERA_LERP) * cam_y + CAMERA_LERP * target_y
+
+        self.cam_target = (smooth_x, smooth_y)
+        self.world_camera.position = (self.cam_target[0], self.cam_target[1])
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.LEFT:
