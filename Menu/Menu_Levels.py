@@ -180,6 +180,15 @@ class Menu_Levels(arcade.Window):
                 game.setup()
                 arcade.run()
 
+            elif arcade.check_for_collision_with_list(self.player, self.Level_4):
+                from Level_4.Level_4 import Level_4
+
+                self.close()
+
+                game = Level_4()
+                game.setup()
+                arcade.run()
+
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT:
             if self.player.change_x < 0:

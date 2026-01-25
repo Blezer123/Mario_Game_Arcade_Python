@@ -31,7 +31,10 @@ class Level_2(arcade.Window):
 
         self.game_manager = None
 
+        self.timer_block = 0
+
         images_dir = os.path.join(current_dir, "..", "images")
+        sound_dir = os.path.join(current_dir, "..", "Sounds")
 
         self.cell_size = 16
         self.all_sprites = arcade.SpriteList()
@@ -41,6 +44,12 @@ class Level_2(arcade.Window):
         self.player_texture_dead = arcade.load_texture(os.path.join(images_dir, "Small_Personaz_Dead.png"))
         self.player_texture_left = self.player_texture_right.flip_horizontally()
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
+
+        self.jump_sound = arcade.load_sound(os.path.join(sound_dir, "Jump.mp3"))
+        self.dead_sound = arcade.load_sound(os.path.join(sound_dir, "Dead.mp3"))
+        self.coin_sound = arcade.load_sound(os.path.join(sound_dir, "Coin_farm.mp3"))
+        self.breaks = arcade.load_sound(os.path.join(sound_dir, "Break.mp3"))
+        self.track_game = arcade.load_sound(os.path.join(sound_dir, "track_game_1.mp3"))
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -57,10 +66,27 @@ class Level_2(arcade.Window):
         self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
                           arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
 
+        self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
+
+        self.font_name = "Super Mario Bros. 2"
+        self.selected_option = 1
+
+        self.x = self.width // 2
+
+        self.Coins_Sum = 0
+
+        self.dead_sound_played = False
+        self.music_started = False
+
+        self.music_player = None
+
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         tmx_path = os.path.join(current_dir, "..", "Level_2", "Level_2.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
+
+        self.screen_width = self.width
+        self.screen_height = self.height
 
         self.Ground = tile_map.sprite_lists["Ground"]
         self.Sky = tile_map.sprite_lists["Sky"]
@@ -78,7 +104,21 @@ class Level_2(arcade.Window):
         self.Dead = tile_map.sprite_lists["Dead"]
         self.Brick = tile_map.sprite_lists["Brick"]
 
-        self.grid = [[0] * 150 for x in range(50)]
+        self.secret_blocks_coins_check = 0
+        self.secret_blocks_grib_life_check = 0
+        self.secret_blocks_grib_baff_check = 0
+
+        for block_coins in self.secret_blocks_coins:
+            block_coins.original_y = block_coins.center_y
+            block_coins.sound_timer = 0
+
+        for block_baff in self.secret_blocks_grib_baff:
+            block_baff.original_y = block_baff.center_y
+            block_baff.sound_timer = 0
+
+        for block_life in self.secret_blocks_grib_life:
+            block_life.original_y = block_life.center_y
+            block_life.sound_timer = 0
 
         self.player = arcade.Sprite(self.player_texture_right, scale=1)
 
@@ -86,7 +126,7 @@ class Level_2(arcade.Window):
         self.player.center_y = 9 * 64
 
         self.all_sprites = (self.Ground, self.Brick, self.secret_blocks_grib_baff,
-                            self.secret_blocks_grib_life, self.Truba, self.Sky_Blocks)
+                            self.secret_blocks_grib_life, self.Truba, self.Sky_Blocks, self.secret_blocks_coins)
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player,
@@ -109,8 +149,6 @@ class Level_2(arcade.Window):
     def on_draw(self):
         from Level_1.Level_1 import Level_1
         Level_1.on_draw(self)
-
-        self.gui_camera.use()
 
     def on_update(self, delta_time: float):
         from Level_1.Level_1 import Level_1

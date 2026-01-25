@@ -2,6 +2,8 @@
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="140" height="30" tilewidth="64" tileheight="64" infinite="0" nextlayerid="20" nextobjectid="1">
  <tileset firstgid="1" source="../Textures/Mob_Grib.tsx"/>
  <tileset firstgid="2" source="../Textures/Textures_levels.tsx"/>
+ <tileset firstgid="627" source="../Textures/Trofey_Texture.tsx"/>
+ <tileset firstgid="628" source="../Textures/Mob_Turtle_Red.tsx"/>
  <layer id="1" name="Ground" width="140" height="30">
   <data encoding="base64" compression="zlib">
    eJzt1ksOQEAURcEXlsE2ev9bw5AIr9vAryq5Q0mLE0QAAAAAAAAAAG9X7j4Ar1FCL+SU0As5JfRCzrYVvbDo5vXJXbn2aaPNMG9M7sq1Txtt9JJ39D79irNvhl7yju73K86e6V97afn30st/e2k5u170opc1veilhl70UkMveqmhl/1Nvx9V+g==
@@ -14,22 +16,22 @@
  </layer>
  <layer id="3" name="Coins" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1rENACAIAEEndP9x7O0kRCTe9TYiH8c4NwNngDx2EOBNWX3WeYA+NDuPu/xL1by9M8hlpwDiNBQAgM78ZwFq7R3WZQAAAACAuxZQxgP3
+   eJzt1zEOwCAIBVBPyP2P07FNJ0yjlPheYuLIAH4cA9aK6gIAmvBewl7xOEAdcwhkReIO3MwGf2PvA+AEso4Zlf2iV8nSK/W6/KU61AgAp3rntNwGAAAAgO8uEQUGtQ==
   </data>
  </layer>
- <layer id="11" name="secret_blocks_grip_baff" width="140" height="30">
+ <layer id="11" name="secret_blocks_grib_baff" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2UENAAAIxLBziH83mCABklbB/ksAAACAq2o7AAAAAAAAAAb5XwAAAAAAfNa7GgCf
+   eJztzjEBAAAMAiAbrn+bNfD1gQQkAAAAAAAAAAAAAMDarQMAAAAAAFQP+rIAUA==
   </data>
  </layer>
  <layer id="12" name="secret_blocks_coins" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1zENAAAIAzAc4t8NBjj4gKRVsOzaIgDYltsBjtMPAAAAHX8RAAD4wHcBAKbsBgAAAAAAuK8ADTgBjA==
+   eJzt1jERAAAIAzEc4t8NDlg5romCbv0qgCx9PQAAgJVeAwDIof0A+MqHAQAAAAAAAABkGuxjAT0=
   </data>
  </layer>
- <layer id="13" name="secret_blocks_grip_life" width="140" height="30">
+ <layer id="13" name="secret_blocks_grib_life" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAIA6A1tH8bv1XQAxKQAAAAH811AAAAAAAAAAAAAAAAAIBa6NwAUA==
+   eJztzjEBAAAMAiAbrn+bVfDzgQQkAAAAnVsHAAAAAAAAAAAAAAAAAEYeuzAAUA==
   </data>
  </layer>
  <layer id="10" name="Sky" width="140" height="30">
@@ -39,7 +41,7 @@
  </layer>
  <layer id="6" name="Dead" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzbENACAIBEA2dw4XdA57gxqjhcVdQvOBJwIAAAAAAAAAAAAAAAAAAAC41YY5zWuSv+ie7ZZNxwvZz7K8+FcH8DIkOw==
+   eJzt0lEKgCAQBUAv2Jk8RxfsHP2GZEG6ljQD+/OQVfClBAAAAAAAAAAAAAAAAPBNSzH8S+3/W/Knd/Z4N7Ei+/LGDmLN2Jcy05dxZuzLVU6s1r6sJ3mP3bWz+WZHD1sx+XDvbHbcJDcD
   </data>
  </layer>
  <layer id="4" name="Truba" width="140" height="30">
@@ -54,7 +56,7 @@
  </layer>
  <layer id="15" name="Mob_Turtle_Red" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwYEAAAAAw6D5U9/gBFUBAAAAAAAAAAAAAAAAAAAA8AxBoAAB
+   eJzt2DEKADAIA0Dpm/t/HDuWDiKWuxdkCAqJAKizV3cCgDu3ig56BwDv/E8AAAAAOOxlTKGrAAAAAADATxJfJwLF
   </data>
  </layer>
  <layer id="16" name="Black" width="140" height="30">
@@ -64,7 +66,7 @@
  </layer>
  <layer id="17" name="Trofey" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAIA6AVsX9NO+zQBxKQAAAAAAAAAAD05jsAAAAAAAAAAHBgAQLwAB4=
+   eJztzkEJAAAIBLDDyvYHQ4j42RIsAQAAAAAAAADY6foeAAAAAAAAAADcGmYfAHY=
   </data>
  </layer>
  <layer id="18" name="Brick" width="140" height="30">
@@ -74,7 +76,7 @@
  </layer>
  <layer id="2" name="Mob_Grib" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1UEKACEIBdC6/6VbBgMR0cCo897KpYJ+WwOoqX/dAJBG5byoPBsA555/wZ8gGzsMEEv0HL7pL/psALxL7gOQlR/GX9h1AHb6ogbOrW7IbQEAAMA0AMQaABI=
+   eJzt1jEOACAIBDD5/6cdnYyDGIhpJ8ZjgNwYAAD8KqoDAAA8pOsA1Or+h2/ydd8NgFz+PgBAb/oaACexmYE8bgsAAACWCZHTAAs=
   </data>
  </layer>
 </map>
