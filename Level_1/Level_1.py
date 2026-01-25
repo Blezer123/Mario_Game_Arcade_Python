@@ -117,6 +117,9 @@ class Level_1(arcade.Window):
             block_life.original_y = block_life.center_y
             block_life.sound_timer = 0
 
+        for block_dead in self.Dead:
+            block_dead.sound_timer = 0
+
         self.player = arcade.Sprite(self.player_texture_right, scale=1)
 
         self.player.center_x = 64
@@ -360,9 +363,6 @@ class Level_1(arcade.Window):
 
         trofey_hit = arcade.check_for_collision_with_list(self.player, self.Trofey)
 
-        if trofey_hit:
-            ...
-
         # Смерть игрока
 
         if self.player_is_dead:
@@ -374,13 +374,10 @@ class Level_1(arcade.Window):
                 # Закрываем окно
                 self.close()
 
-                # Получаем путь к Menu.py
-
                 current_dir = os.path.dirname(os.path.abspath(__file__))
                 parent_dir = os.path.dirname(current_dir)
                 menu_path = os.path.join(parent_dir, "Menu", "Menu.py")
                 subprocess.Popen([sys.executable, menu_path])
-            return
 
         # Обработка на столкновение игрока и блока с монетами
 
@@ -462,15 +459,21 @@ class Level_1(arcade.Window):
 
         # Смерть игрока при падении в зону смерти
 
-        if arcade.check_for_collision_with_list(self.player, self.Dead):
-            self.player_is_dead = True
-            self.music_started = False
-            self.player.texture = self.player_texture_dead
+        for block_dead in self.Dead:
+            if block_dead.sound_timer > 0:
+                block_dead.sound_timer -= 1
 
-            if self.music_player:
-                arcade.stop_sound(self.music_player)
+            if arcade.check_for_collision(self.player, block_dead):
+                if not self.player_is_dead:
+                    self.player_is_dead = True
+                    self.player.texture = self.player_texture_dead
 
-                arcade.play_sound(self.dead_sound)
+                    if self.music_player:
+                        arcade.stop_sound(self.music_player)
+
+                    if block_dead.sound_timer == 0:
+                        arcade.play_sound(self.dead_sound)
+                        block_dead.sound_timer = 30
 
         # Проигрываем трек игры пока игрок жив
         if not self.player_is_dead and not self.music_started:
