@@ -1,5 +1,6 @@
 import arcade
 import os
+import random
 
 SPEED = 5
 GRAVITY = 0.5
@@ -77,6 +78,10 @@ class Level_1(arcade.Window):
         self.music_started = False
         self.music_player = None
 
+        self.particle_list = arcade.SpriteList()
+        self.trail_center_x = 0
+        self.trail_center_y = 0
+
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         tmx_path = os.path.join(current_dir, "..", "Level_1", "Level_1.tmx")
@@ -146,6 +151,10 @@ class Level_1(arcade.Window):
             enemy_turtle.direction = 1
             enemy_turtle.speed = ENEMY_SPEED
 
+        self.particle_list = arcade.SpriteList()
+        self.trail_center_x = self.player.center_x
+        self.trail_center_y = self.player.center_y
+
     def on_draw(self):
         self.clear()
         self.world_camera.use()
@@ -167,6 +176,7 @@ class Level_1(arcade.Window):
         self.Trofey.draw()
         self.Sky_Blocks.draw()
         arcade.draw_sprite(self.player)
+        self.particle_list.draw()
 
         self.gui_camera.use()
 
@@ -392,7 +402,7 @@ class Level_1(arcade.Window):
 
                 if self.secret_blocks_coins_check == 0:
                     block_coins.center_y += 5
-                    self.Coins_Sum += 1
+                    self.Coins_Sum += 2
                     arcade.play_sound(self.coin_sound)
                     self.secret_blocks_coins_check = 1
 
@@ -476,6 +486,7 @@ class Level_1(arcade.Window):
                         block_dead.sound_timer = 30
 
         # Проигрываем трек игры пока игрок жив
+
         if not self.player_is_dead and not self.music_started:
             self.music_player = arcade.play_sound(self.track_game, loop=True)
             self.music_started = True
