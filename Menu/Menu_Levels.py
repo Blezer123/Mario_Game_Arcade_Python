@@ -100,6 +100,7 @@ class Menu_Levels(arcade.Window):
         if abs(self.player.change_x) > 0:
             self.animation_timer_player += 1
             if self.animation_timer_player == 5:
+
                 # Переключаем между обычной текстурой и текстурой движения
 
                 if self.player.texture == self.player_texture_right:
@@ -112,35 +113,6 @@ class Menu_Levels(arcade.Window):
                     self.player.texture = self.player_texture_left
 
                 self.animation_timer_player = 0
-
-        cam_x, cam_y = self.world_camera.position
-        dz_left = cam_x - self.DEAD_ZONE_W // 2
-        dz_right = cam_x + self.DEAD_ZONE_W // 2
-        dz_bottom = cam_y - self.DEAD_ZONE_H // 2
-        dz_top = cam_y + self.DEAD_ZONE_H // 2
-
-        px, py = self.player.center_x, self.player.center_y
-        target_x, target_y = cam_x, cam_y
-
-        if px < dz_left:
-            target_x = px + self.DEAD_ZONE_W // 2
-        elif px > dz_right:
-            target_x = px - self.DEAD_ZONE_W // 2
-        if py < dz_bottom:
-            target_y = py + self.DEAD_ZONE_H // 2
-        elif py > dz_top:
-            target_y = py - self.DEAD_ZONE_H // 2
-
-        half_w = self.world_camera.viewport_width / 2
-        half_h = self.world_camera.viewport_height / 2
-        target_x = max(half_w, min(self.map_pixel_width - half_w, target_x))
-        target_y = max(half_h, min(self.map_pixel_height - half_h, target_y))
-
-        smooth_x = (1 - CAMERA_LERP) * cam_x + CAMERA_LERP * target_x
-        smooth_y = (1 - CAMERA_LERP) * cam_y + CAMERA_LERP * target_y
-
-        self.cam_target = (smooth_x, smooth_y)
-        self.world_camera.position = (self.cam_target[0], self.cam_target[1])
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.LEFT:

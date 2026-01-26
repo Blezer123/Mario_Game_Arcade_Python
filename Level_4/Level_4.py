@@ -29,9 +29,9 @@ class Level_4(arcade.Window):
 
         self.player_is_dead = False
 
-        self.game_manager = None
-
         self.timer_block = 0
+
+        self.super = False
 
         images_dir = os.path.join(current_dir, "..", "images")
         sound_dir = os.path.join(current_dir, "..", "Sounds")
@@ -45,11 +45,16 @@ class Level_4(arcade.Window):
         self.player_texture_left = self.player_texture_right.flip_horizontally()
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
 
+        self.super_mario_right = arcade.load_texture(os.path.join(images_dir, "Super_Mario.png"))
+        self.super_mario_left = self.super_mario_right.flip_horizontally()
+
         self.jump_sound = arcade.load_sound(os.path.join(sound_dir, "Jump.mp3"))
         self.dead_sound = arcade.load_sound(os.path.join(sound_dir, "Dead.mp3"))
         self.coin_sound = arcade.load_sound(os.path.join(sound_dir, "Coin_farm.mp3"))
         self.breaks = arcade.load_sound(os.path.join(sound_dir, "Break.mp3"))
         self.track_game = arcade.load_sound(os.path.join(sound_dir, "track_game_1.mp3"))
+        self.dead_mob = arcade.load_sound(os.path.join(sound_dir, "Dead_Mob.mp3"))
+        self.baff = arcade.load_sound(os.path.join(sound_dir, "Baff.mp3"))
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -66,6 +71,10 @@ class Level_4(arcade.Window):
         self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
                                  arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
 
+        self.grib_baff = arcade.load_texture(os.path.join(images_dir, "Grib_Baff.png"))
+
+        self.active_grib_baff = arcade.SpriteList()
+
         self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
 
         self.font_name = "Super Mario Bros. 2"
@@ -77,7 +86,6 @@ class Level_4(arcade.Window):
 
         self.dead_sound_played = False
         self.music_started = False
-
         self.music_player = None
 
     def setup(self):
@@ -120,6 +128,9 @@ class Level_4(arcade.Window):
             block_life.original_y = block_life.center_y
             block_life.sound_timer = 0
 
+        for block_dead in self.Dead:
+            block_dead.sound_timer = 0
+
         self.player = arcade.Sprite(self.player_texture_right, scale=1)
 
         self.player.center_x = 64
@@ -145,6 +156,17 @@ class Level_4(arcade.Window):
             enemy_turtle.patrol_distance = 0
             enemy_turtle.direction = 1
             enemy_turtle.speed = ENEMY_SPEED
+
+        self.collision_sprites = arcade.SpriteList()
+        self.collision_sprites.extend(self.Ground)
+        self.collision_sprites.extend(self.Brick)
+        self.collision_sprites.extend(self.Truba)
+        self.collision_sprites.extend(self.secret_blocks_grib_baff)
+        self.collision_sprites.extend(self.secret_blocks_grib_life)
+        self.collision_sprites.extend(self.secret_blocks_coins)
+        self.collision_sprites.extend(self.Sky_Blocks)
+
+        self.active_grib_baff.clear()
 
     def on_draw(self):
         from Level_1.Level_1 import Level_1

@@ -1,9 +1,9 @@
 import arcade
 import os
-import random
 
 SPEED = 5
 GRAVITY = 0.5
+GRAVITY_SUPER = 0.45
 PLAYER_JUMP_SPEED = 16
 CAMERA_LERP = 0.1
 ENEMY_SPEED = 1.5
@@ -32,6 +32,9 @@ class Level_1(arcade.Window):
 
         self.timer_block = 0
 
+        self.super = False
+        self.player_size_changed = False
+
         images_dir = os.path.join(current_dir, "..", "images")
         sound_dir = os.path.join(current_dir, "..", "Sounds")
 
@@ -44,11 +47,16 @@ class Level_1(arcade.Window):
         self.player_texture_left = self.player_texture_right.flip_horizontally()
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
 
+        self.super_mario_right = arcade.load_texture(os.path.join(images_dir, "Super_Mario.png"))
+        self.super_mario_left = self.super_mario_right.flip_horizontally()
+
         self.jump_sound = arcade.load_sound(os.path.join(sound_dir, "Jump.mp3"))
         self.dead_sound = arcade.load_sound(os.path.join(sound_dir, "Dead.mp3"))
         self.coin_sound = arcade.load_sound(os.path.join(sound_dir, "Coin_farm.mp3"))
         self.breaks = arcade.load_sound(os.path.join(sound_dir, "Break.mp3"))
         self.track_game = arcade.load_sound(os.path.join(sound_dir, "track_game_1.mp3"))
+        self.dead_mob = arcade.load_sound(os.path.join(sound_dir, "Dead_Mob.mp3"))
+        self.baff = arcade.load_sound(os.path.join(sound_dir, "Baff.mp3"))
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -65,6 +73,10 @@ class Level_1(arcade.Window):
         self.textures_turtle = [[arcade.load_texture(os.path.join(images_dir, "Tutle_1_R.png")),
                           arcade.load_texture(os.path.join(images_dir, "Turtle_2_R.png"))]]
 
+        self.grib_baff = arcade.load_texture(os.path.join(images_dir, "Grib_Baff.png"))
+
+        self.active_grib_baff = arcade.SpriteList()
+
         self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
 
         self.font_name = "Super Mario Bros. 2"
@@ -77,10 +89,6 @@ class Level_1(arcade.Window):
         self.dead_sound_played = False
         self.music_started = False
         self.music_player = None
-
-        self.particle_list = arcade.SpriteList()
-        self.trail_center_x = 0
-        self.trail_center_y = 0
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -151,9 +159,16 @@ class Level_1(arcade.Window):
             enemy_turtle.direction = 1
             enemy_turtle.speed = ENEMY_SPEED
 
-        self.particle_list = arcade.SpriteList()
-        self.trail_center_x = self.player.center_x
-        self.trail_center_y = self.player.center_y
+        self.collision_sprites = arcade.SpriteList()
+        self.collision_sprites.extend(self.Ground)
+        self.collision_sprites.extend(self.Brick)
+        self.collision_sprites.extend(self.Truba)
+        self.collision_sprites.extend(self.secret_blocks_grib_baff)
+        self.collision_sprites.extend(self.secret_blocks_grib_life)
+        self.collision_sprites.extend(self.secret_blocks_coins)
+        self.collision_sprites.extend(self.Sky_Blocks)
+
+        self.active_grib_baff.clear()
 
     def on_draw(self):
         self.clear()
@@ -175,8 +190,8 @@ class Level_1(arcade.Window):
         self.Black.draw()
         self.Trofey.draw()
         self.Sky_Blocks.draw()
+        self.active_grib_baff.draw()
         arcade.draw_sprite(self.player)
-        self.particle_list.draw()
 
         self.gui_camera.use()
 
@@ -230,8 +245,7 @@ class Level_1(arcade.Window):
 
                 if enemy in self.Mob_Grib:
                     enemy.remove_from_sprite_lists()
-                elif enemy in self.Mob_Turtle:
-                    enemy.remove_from_sprite_lists()
+                    arcade.play_sound(self.dead_mob)
 
             else:
                 if not self.player_is_dead:
@@ -254,10 +268,9 @@ class Level_1(arcade.Window):
 
                 # Удаляем врага
 
-                if enemy_turtle in self.Mob_Grib:
+                if enemy_turtle in self.Mob_Turtle:
                     enemy_turtle.remove_from_sprite_lists()
-                elif enemy_turtle in self.Mob_Turtle:
-                    enemy_turtle.remove_from_sprite_lists()
+                    arcade.play_sound(self.dead_mob)
 
             # Столкновение сбоку или снизу - смерть игрока
 
@@ -431,6 +444,19 @@ class Level_1(arcade.Window):
                     block_baff.center_y += 5
                     self.secret_blocks_grib_baff_check = 1
 
+                    grib_baff = arcade.Sprite()
+                    grib_baff.texture = self.grib_baff
+                    grib_baff.scale = 1.0
+                    grib_baff.center_x = block_baff.center_x
+                    grib_baff.center_y = block_baff.top + 30
+
+                    grib_baff.change_x = 1.0
+                    grib_baff.change_y = 3
+                    grib_baff.direction = 1
+
+                    # Добавляем в список активных грибов
+                    self.active_grib_baff.append(grib_baff)
+
                 else:
                     block_baff.texture = self.texture_block
                     block_baff.center_y += 5
@@ -441,6 +467,85 @@ class Level_1(arcade.Window):
 
             else:
                 block_baff.center_y = block_baff.original_y
+
+        # Движение самого гриба, если мы его выбили
+
+        for grib in self.active_grib_baff:
+            # Гравитация
+
+            grib.change_y -= GRAVITY
+
+            old_x = grib.center_x
+            old_y = grib.center_y
+
+            grib.change_x = 3 * grib.direction
+
+            # Движение гриба по горизонтали
+
+            grib.center_x += grib.change_x
+
+            # Проверяем столкновения по горизонтали
+
+            hit_list_x = arcade.check_for_collision_with_list(grib, self.collision_sprites)
+
+            if hit_list_x:
+
+                grib.center_x = old_x
+                grib.direction *= -1
+
+                if arcade.check_for_collision_with_list(grib, self.collision_sprites):
+                    grib.center_x = old_x
+
+            grib.center_y += grib.change_y
+
+            hit_list_y = arcade.check_for_collision_with_list(grib, self.collision_sprites)
+
+            if hit_list_y:
+                grib.center_y = old_y
+                grib.change_y = 0
+
+            # Проверяем сбор гриба игроком
+
+            if arcade.check_for_collision(self.player, grib):
+                grib.remove_from_sprite_lists()
+                arcade.play_sound(self.baff)
+
+                if not self.super:
+                    # Сохраняем позицию игрока
+
+                    old_x = self.player.center_x
+                    old_y = self.player.center_y
+
+                    # Меняем состояние
+
+                    self.super = True
+
+                    # Меняем текстуру
+
+                    if self.player_facing_direction > 0:
+                        self.player.texture = self.super_mario_right
+                    else:
+                        self.player.texture = self.super_mario_left
+
+                    # Пересоздаём спрайт с новыми размерами
+
+                    new_player = arcade.Sprite(self.player.texture, scale=1)
+                    new_player.center_x = old_x
+                    new_player.center_y = old_y
+                    new_player.change_x = self.player.change_x
+                    new_player.change_y = self.player.change_y
+
+                    # Заменяем спрайт
+
+                    self.player = new_player
+
+                    # Пересоздаём физ движок
+
+                    self.physics_engine = arcade.PhysicsEnginePlatformer(
+                        self.player,
+                        platforms=self.all_sprites,
+                        gravity_constant=GRAVITY_SUPER
+                    )
 
         # Обработка на столкновение игрока и блока с доп жизнью
 
@@ -488,7 +593,7 @@ class Level_1(arcade.Window):
         # Проигрываем трек игры пока игрок жив
 
         if not self.player_is_dead and not self.music_started:
-            self.music_player = arcade.play_sound(self.track_game, loop=True)
+            self.music_player = arcade.play_sound(self.track_game, loop=True, volume=0.6)
             self.music_started = True
 
     def on_key_press(self, key, modifiers):
@@ -501,11 +606,17 @@ class Level_1(arcade.Window):
         elif key == arcade.key.LEFT:
             self.player.change_x = -SPEED
             self.player_facing_direction = -1
-            self.player.texture = self.player_texture_left
+            if self.super:
+                self.player.texture = self.super_mario_left
+            else:
+                self.player.texture = self.player_texture_left
         elif key == arcade.key.RIGHT:
             self.player.change_x = SPEED
             self.player_facing_direction = 1
-            self.player.texture = self.player_texture_right
+            if self.super:
+                self.player.texture = self.super_mario_right
+            else:
+                self.player.texture = self.player_texture_right
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.LEFT:
