@@ -1,17 +1,24 @@
 import arcade
 import os
+import sqlite3
 
 SPEED = 5
 GRAVITY = 0.5
+GRAVITY_SUPER = 0.45
 PLAYER_JUMP_SPEED = 16
 CAMERA_LERP = 0.1
 ENEMY_SPEED = 1.5
 BOUNCE_SPEED = 10
 
+screen_width, screen_height = arcade.get_display_size()
+
+SCREEN_WIDTH = screen_width
+SCREEN_HEIGHT = screen_height
+
 
 class Level_4(arcade.Window):
     def __init__(self):
-        super().__init__(1000, 600, "Mario Game", fullscreen=True)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mario Game", fullscreen=True)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -74,6 +81,7 @@ class Level_4(arcade.Window):
         self.grib_baff = arcade.load_texture(os.path.join(images_dir, "Grib_Baff.png"))
 
         self.active_grib_baff = arcade.SpriteList()
+        self.active_grib_life = arcade.SpriteList()
 
         self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
 
@@ -87,6 +95,9 @@ class Level_4(arcade.Window):
         self.dead_sound_played = False
         self.music_started = False
         self.music_player = None
+
+        self.death_count = 0
+        self.max_deaths = 2
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -119,6 +130,7 @@ class Level_4(arcade.Window):
         for block_coins in self.secret_blocks_coins:
             block_coins.original_y = block_coins.center_y
             block_coins.sound_timer = 0
+            block_coins.coins_given = False
 
         for block_baff in self.secret_blocks_grib_baff:
             block_baff.original_y = block_baff.center_y

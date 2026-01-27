@@ -1,18 +1,24 @@
 import arcade
 import os
+import sqlite3
 
 SPEED = 5
 GRAVITY = 0.5
-GRAVITY_SUPER = 0.45
+GRAVITY_SUPER = 0.47
 PLAYER_JUMP_SPEED = 16
 CAMERA_LERP = 0.1
 ENEMY_SPEED = 1.5
 BOUNCE_SPEED = 10
 
+screen_width, screen_height = arcade.get_display_size()
+
+SCREEN_WIDTH = screen_width
+SCREEN_HEIGHT = screen_height
+
 
 class Level_1(arcade.Window):
     def __init__(self):
-        super().__init__(1000, 600, "Mario Game", fullscreen=True)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mario Game", fullscreen=True)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -75,7 +81,10 @@ class Level_1(arcade.Window):
 
         self.grib_baff = arcade.load_texture(os.path.join(images_dir, "Grib_Baff.png"))
 
+        self.grib_life = arcade.load_texture(os.path.join(images_dir, "Grib_Life.png"))
+
         self.active_grib_baff = arcade.SpriteList()
+        self.active_grib_life = arcade.SpriteList()
 
         self.texture_block = arcade.load_texture(os.path.join(images_dir, "secret_block.png"))
 
@@ -89,6 +98,9 @@ class Level_1(arcade.Window):
         self.dead_sound_played = False
         self.music_started = False
         self.music_player = None
+
+        self.death_count = 0
+        self.max_deaths = 2
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -121,6 +133,7 @@ class Level_1(arcade.Window):
         for block_coins in self.secret_blocks_coins:
             block_coins.original_y = block_coins.center_y
             block_coins.sound_timer = 0
+            block_coins.coins_given = False
 
         for block_baff in self.secret_blocks_grib_baff:
             block_baff.original_y = block_baff.center_y
@@ -191,6 +204,7 @@ class Level_1(arcade.Window):
         self.Trofey.draw()
         self.Sky_Blocks.draw()
         self.active_grib_baff.draw()
+        self.active_grib_life.draw()
         arcade.draw_sprite(self.player)
 
         self.gui_camera.use()
@@ -218,8 +232,39 @@ class Level_1(arcade.Window):
             anchor_y="center"
         )
 
+        arcade.draw_text(
+            f"Death: {self.death_count}/{self.max_deaths + 1}",
+            self.x + 750,
+            option1_y- 55,
+            arcade.color.BLACK,
+            40,
+            font_name=self.font_name,
+            anchor_x="left",
+            anchor_y="center"
+        )
+        arcade.draw_text(
+            f"Death: {self.death_count}/{self.max_deaths + 1}",
+            self.x + 757,
+            option1_y - 55,
+            arcade.color.WHITE,
+            40,
+            font_name=self.font_name,
+            anchor_x="left",
+            anchor_y="center"
+        )
+
     def on_update(self, delta_time: float):
         self.physics_engine.update()
+
+        self.con = sqlite3.connect("Results.sqlite")
+        self.cur = self.con.cursor()
+
+        # создание таблицы БД
+
+        self.cur.execute('''CREATE TABLE IF NOT EXISTS results(
+                id INTEGER PRIMARY KEY, coins INTEGER)''')
+
+        self.con.commit()
 
         # Сбор монет
 
@@ -391,16 +436,49 @@ class Level_1(arcade.Window):
         if self.player_is_dead:
             self.timer += 1
             if self.timer > 240:
-                import subprocess
-                import sys
 
-                # Закрываем окно
-                self.close()
+                if self.death_count >= self.max_deaths:
+                    import subprocess
+                    import sys
 
-                current_dir = os.path.dirname(os.path.abspath(__file__))
-                parent_dir = os.path.dirname(current_dir)
-                menu_path = os.path.join(parent_dir, "Menu", "Menu.py")
-                subprocess.Popen([sys.executable, menu_path])
+                    self.cur.execute(
+                        "INSERT INTO results (coins) VALUES (?)",
+                        (self.Coins_Sum,)
+                    )
+                    self.con.commit()
+
+                    # Закрываем окно
+                    self.close()
+
+                    current_dir = os.path.dirname(os.path.abspath(__file__))
+                    parent_dir = os.path.dirname(current_dir)
+                    menu_path = os.path.join(parent_dir, "Menu", "Menu.py")
+                    subprocess.Popen([sys.executable, menu_path])
+
+                # Перезапуск всего уровня
+
+                self.player_is_dead = False
+                self.timer = 0
+                self.dead_sound_played = False
+                self.music_started = False
+
+                # Сброс позиции игрока
+
+                self.player.center_x = 64
+                self.player.center_y = 9 * 64
+
+                # Сброс текстуры
+
+                self.player.texture = self.player_texture_right
+
+                # Сброс скорости
+
+                self.player.change_x = 0
+                self.player.change_y = 0
+
+                # Добовляем +1 к счетчику смертей
+
+                self.death_count += 1
 
         # Обработка на столкновение игрока и блока с монетами
 
@@ -413,11 +491,11 @@ class Level_1(arcade.Window):
                     self.player.left >= block_coins.left - 20 and \
                     self.player.right <= block_coins.right + 20 and self.player.bottom < block_coins.top:
 
-                if self.secret_blocks_coins_check == 0:
+                if not block_coins.coins_given:
                     block_coins.center_y += 5
                     self.Coins_Sum += 2
                     arcade.play_sound(self.coin_sound)
-                    self.secret_blocks_coins_check = 1
+                    block_coins.coins_given = True
 
                 else:
                     block_coins.texture = self.texture_block
@@ -478,7 +556,7 @@ class Level_1(arcade.Window):
             old_x = grib.center_x
             old_y = grib.center_y
 
-            grib.change_x = 3 * grib.direction
+            grib.change_x = 4 * grib.direction
 
             # Движение гриба по горизонтали
 
@@ -561,6 +639,19 @@ class Level_1(arcade.Window):
                     block_life.center_y += 5
                     self.secret_blocks_grib_life_check = 1
 
+                    grib_life = arcade.Sprite()
+                    grib_life.texture = self.grib_life
+                    grib_life.scale = 1.0
+                    grib_life.center_x = block_life.center_x
+                    grib_life.center_y = block_life.top + 30
+
+                    grib_life.change_x = 1.0
+                    grib_life.change_y = 3
+                    grib_life.direction = 1
+
+                    # Добавляем в список активных грибов
+                    self.active_grib_life.append(grib_life)
+
                 else:
                     block_life.texture = self.texture_block
                     block_life.center_y += 5
@@ -571,6 +662,47 @@ class Level_1(arcade.Window):
 
             else:
                 block_life.center_y = block_life.original_y
+
+        for grib in self.active_grib_life:
+            # Гравитация
+
+            grib.change_y -= GRAVITY
+
+            old_x = grib.center_x
+            old_y = grib.center_y
+
+            grib.change_x = 4 * grib.direction
+
+            # Движение гриба по горизонтали
+
+            grib.center_x += grib.change_x
+
+            # Проверяем столкновения по горизонтали
+
+            hit_list_x = arcade.check_for_collision_with_list(grib, self.collision_sprites)
+
+            if hit_list_x:
+
+                grib.center_x = old_x
+                grib.direction *= -1
+
+                if arcade.check_for_collision_with_list(grib, self.collision_sprites):
+                    grib.center_x = old_x
+
+            grib.center_y += grib.change_y
+
+            hit_list_y = arcade.check_for_collision_with_list(grib, self.collision_sprites)
+
+            if hit_list_y:
+                grib.center_y = old_y
+                grib.change_y = 0
+
+            # Забрали гриб = получили 1 дополнительную жизнь
+
+            if arcade.check_for_collision(self.player, grib):
+                grib.remove_from_sprite_lists()
+                arcade.play_sound(self.baff)
+                self.max_deaths += 1
 
         # Смерть игрока при падении в зону смерти
 

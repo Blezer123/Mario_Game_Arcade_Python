@@ -16,7 +16,7 @@
  </layer>
  <layer id="3" name="Coins" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1zEOwCAIBVBPyP2P07FNJ0yjlPheYuLIAH4cA9aK6gIAmvBewl7xOEAdcwhkReIO3MwGf2PvA+AEso4Zlf2iV8nSK/W6/KU61AgAp3rntNwGAAAAgO8uEQUGtQ==
+   eJzt1zEOwCAIBVBPyP2P07G2E6ZRQvpeYuLIAH4cA/aK6gIAmvBewlkxHaCOOQSyInEHbidmQ44DADzZjVhR2S96lSy9Uq/L37tDjQDwV++cltsAAAAA8N0FZlQGtQ==
   </data>
  </layer>
  <layer id="11" name="secret_blocks_grib_baff" width="140" height="30">
@@ -71,7 +71,7 @@
  </layer>
  <layer id="18" name="Brick" width="140" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt2EsOgCAMBUAP5f3P5lr8JCgBWmYS19JHQwPbBsxoL77synpXqJmzUXufsfe+1pMpg8wy9mwUd9lnyT9rXa2MzKflv+0v0Tmn+nmaefLvpyZr+3Olh9uLkt0MbwsRRV8/86s9h3uf2X/mhBnDaPoO+lr5rS7SWgFW9Taj3F0AAAAAAADaOgAFbhtt
+   eJzt2EsOgCAMBUAO5f3P5lr8JCoBWmYS17aPCpFSgBlt1ZNd3e8KPXM0au0zzt7XfjJlkFnGmY3iKvss+Wftq5WR+bR8t/UlOvtUP3dnnvz7eZO19Tkzw+1FyW6Gu4WIetTvG1zb7Pvwn/pm7438zB30tfJdXaRaAVb1dEb5dwEAAAAAAGhrB8x9G20=
   </data>
  </layer>
  <layer id="2" name="Mob_Grib" width="140" height="30">
