@@ -847,6 +847,35 @@ class Level_1(arcade.Window):
                     self.player_is_dead = True
                     self.player.texture = self.player_texture_dead
 
+                    # Уменьшаем игрока
+
+                    old_x = self.player.center_x
+                    old_y = self.player.center_y
+
+                    # Меняем состояние
+
+                    self.super = False
+
+                    # Пересоздаём спрайт с меньшими размерами
+
+                    new_player = arcade.Sprite(self.player.texture, scale=1)
+                    new_player.center_x = old_x
+                    new_player.center_y = old_y
+                    new_player.change_x = self.player.change_x
+                    new_player.change_y = self.player.change_y
+
+                    # Заменяем спрайт
+
+                    self.player = new_player
+
+                    # Пересоздаём физ движок с обычной гравитацией
+
+                    self.physics_engine = arcade.PhysicsEnginePlatformer(
+                        self.player,
+                        platforms=self.all_sprites,
+                        gravity_constant=GRAVITY
+                    )
+
                     if self.music_player:
                         arcade.stop_sound(self.music_player)
 
