@@ -57,7 +57,9 @@ class Level_4(arcade.Window):
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
 
         self.super_mario_right = arcade.load_texture(os.path.join(images_dir, "Super_Mario.png"))
+        self.super_mario_dviz_left = arcade.load_texture(os.path.join(images_dir, "Super_Mario_Dviz.png"))
         self.super_mario_left = self.super_mario_right.flip_horizontally()
+        self.super_texture_dviz_right = self.super_mario_dviz_left.flip_horizontally()
 
         self.jump_sound = arcade.load_sound(os.path.join(sound_dir, "Jump.mp3"))
         self.dead_sound = arcade.load_sound(os.path.join(sound_dir, "Dead.mp3"))

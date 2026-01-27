@@ -59,7 +59,9 @@ class Level_1(arcade.Window):
         self.player_texture_dviz_left = self.player_texture_dviz_right.flip_horizontally()
 
         self.super_mario_right = arcade.load_texture(os.path.join(images_dir, "Super_Mario.png"))
+        self.super_mario_dviz_left = arcade.load_texture(os.path.join(images_dir, "Super_Mario_Dviz.png"))
         self.super_mario_left = self.super_mario_right.flip_horizontally()
+        self.super_texture_dviz_right = self.super_mario_dviz_left.flip_horizontally()
 
         self.jump_sound = arcade.load_sound(os.path.join(sound_dir, "Jump.mp3"))
         self.dead_sound = arcade.load_sound(os.path.join(sound_dir, "Dead.mp3"))
@@ -548,16 +550,30 @@ class Level_1(arcade.Window):
         if abs(self.player.change_x) > 0:
             self.animation_timer_player += 1
             if self.animation_timer_player == 5:
-                # Переключаем между обычной текстурой и текстурой движения
+                if self.super:
+                    # Анимация для Супер Марио
 
-                if self.player.texture == self.player_texture_right:
-                    self.player.texture = self.player_texture_dviz_right
-                elif self.player.texture == self.player_texture_dviz_right:
-                    self.player.texture = self.player_texture_right
-                elif self.player.texture == self.player_texture_left:
-                    self.player.texture = self.player_texture_dviz_left
-                elif self.player.texture == self.player_texture_dviz_left:
-                    self.player.texture = self.player_texture_left
+                    if self.player.texture == self.super_mario_right:
+                        self.player.texture = self.super_texture_dviz_right
+                    elif self.player.texture == self.super_texture_dviz_right:
+                        self.player.texture = self.super_mario_right
+                    elif self.player.texture == self.super_mario_left:
+                        self.player.texture = self.super_mario_dviz_left
+                    elif self.player.texture == self.super_mario_dviz_left:
+                        self.player.texture = self.super_mario_left
+                else:
+                    # Анимация для обычного Марио
+
+                    if self.player.texture == self.player_texture_right:
+                        self.player.texture = self.player_texture_dviz_right
+                    elif self.player.texture == self.player_texture_dviz_right:
+                        self.player.texture = self.player_texture_right
+                    elif self.player.texture == self.player_texture_left:
+                        self.player.texture = self.player_texture_dviz_left
+                    elif self.player.texture == self.player_texture_dviz_left:
+                        self.player.texture = self.player_texture_left
+
+                # Сбрасываем таймер
 
                 self.animation_timer_player = 0
 
