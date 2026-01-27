@@ -32,6 +32,10 @@ class Level_3(arcade.Window):
 
         self.timer = 0
 
+        self.explosions = []
+        self.explosion = None
+        self.explosion_1 = None
+
         self.timer_pause = 0
 
         self.player_is_dead = False
@@ -62,6 +66,7 @@ class Level_3(arcade.Window):
         self.track_game = arcade.load_sound(os.path.join(sound_dir, "track_game_1.mp3"))
         self.dead_mob = arcade.load_sound(os.path.join(sound_dir, "Dead_Mob.mp3"))
         self.baff = arcade.load_sound(os.path.join(sound_dir, "Baff.mp3"))
+        self.unbaff = arcade.load_sound(os.path.join(sound_dir, "UnSuper.mp3"))
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()

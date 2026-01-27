@@ -1,6 +1,7 @@
 import arcade
 import os
 import sqlite3
+from arcade.particles import Emitter, FadeParticle, EmitBurst
 
 SPEED = 5
 GRAVITY = 0.5
@@ -31,6 +32,10 @@ class Level_1(arcade.Window):
         self.player_facing_direction = 1
 
         self.timer = 0
+
+        self.explosions = []
+        self.explosion = None
+        self.explosion_1 = None
 
         self.timer_pause = 0
 
@@ -63,6 +68,7 @@ class Level_1(arcade.Window):
         self.track_game = arcade.load_sound(os.path.join(sound_dir, "track_game_1.mp3"))
         self.dead_mob = arcade.load_sound(os.path.join(sound_dir, "Dead_Mob.mp3"))
         self.baff = arcade.load_sound(os.path.join(sound_dir, "Baff.mp3"))
+        self.unbaff = arcade.load_sound(os.path.join(sound_dir, "UnSuper.mp3"))
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -205,6 +211,13 @@ class Level_1(arcade.Window):
         self.Sky_Blocks.draw()
         self.active_grib_baff.draw()
         self.active_grib_life.draw()
+
+        if self.explosion:
+            self.explosion.draw()
+
+        if self.explosion_1:
+            self.explosion_1.draw()
+
         arcade.draw_sprite(self.player)
 
         self.gui_camera.use()
@@ -292,8 +305,61 @@ class Level_1(arcade.Window):
                     enemy.remove_from_sprite_lists()
                     arcade.play_sound(self.dead_mob)
 
+                    self.explosion = Emitter(
+                        center_xy=(enemy.center_x, enemy.center_y),
+                        emit_controller=EmitBurst(20),
+                        particle_factory=lambda e: FadeParticle(
+                            filename_or_texture=arcade.make_soft_circle_texture(10, arcade.color.GRAY),
+                            change_xy=arcade.math.rand_in_circle((0.0, 0.0), 6.0),
+                            lifetime=0.6
+                        )
+                    )
+
             else:
-                if not self.player_is_dead:
+                if self.super:
+                    arcade.play_sound(self.unbaff)
+
+                    # Уменьшаем игрока
+
+                    old_x = self.player.center_x
+                    old_y = self.player.center_y
+
+                    # Меняем состояние
+
+                    self.super = False
+
+                    # Меняем текстуру в зависимости от направления
+
+                    if self.player_facing_direction > 0:
+                        self.player.texture = self.player_texture_right
+                    else:
+                        self.player.texture = self.player_texture_left
+
+                    # Пересоздаём спрайт с меньшими размерами
+
+                    new_player = arcade.Sprite(self.player.texture, scale=1)
+                    new_player.center_x = old_x
+                    new_player.center_y = old_y
+                    new_player.change_x = self.player.change_x
+                    new_player.change_y = self.player.change_y
+
+                    # Заменяем спрайт
+
+                    self.player = new_player
+
+                    # Пересоздаём физ движок с обычной гравитацией
+
+                    self.physics_engine = arcade.PhysicsEnginePlatformer(
+                        self.player,
+                        platforms=self.all_sprites,
+                        gravity_constant=GRAVITY
+                    )
+
+                    # Даем игроку небольшой отскок
+
+                    self.player.change_y = 5
+
+                elif not self.player_is_dead:
                     self.player_is_dead = True
                     self.player.texture = self.player_texture_dead
 
@@ -303,6 +369,13 @@ class Level_1(arcade.Window):
                     if not self.dead_sound_played:
                         arcade.play_sound(self.dead_sound)
                         self.dead_sound_played = True
+
+        # Обновляем взрыв
+
+        if self.explosion:
+            self.explosion.update(delta_time)
+            if self.explosion.can_reap():
+                self.explosion = None
 
         for enemy_turtle in enemy_hit_list_turtle:
             # Проверяем, прыгнул ли игрок на врага сверху
@@ -317,11 +390,63 @@ class Level_1(arcade.Window):
                     enemy_turtle.remove_from_sprite_lists()
                     arcade.play_sound(self.dead_mob)
 
+                    self.explosion_1 = Emitter(
+                        center_xy=(enemy_turtle.center_x, enemy_turtle.center_y),
+                        emit_controller=EmitBurst(20),
+                        particle_factory=lambda e: FadeParticle(
+                            filename_or_texture=arcade.make_soft_circle_texture(10, arcade.color.GRAY),
+                            change_xy=arcade.math.rand_in_circle((0.0, 0.0), 6.0),
+                            lifetime=0.6
+                        )
+                    )
+
             # Столкновение сбоку или снизу - смерть игрока
 
             else:
+                if self.super:
+                    arcade.play_sound(self.unbaff)
 
-                if not self.player_is_dead:
+                    # Уменьшаем игрока
+
+                    old_x = self.player.center_x
+                    old_y = self.player.center_y
+
+                    # Меняем состояние
+
+                    self.super = False
+
+                    # Меняем текстуру в зависимости от направления
+
+                    if self.player_facing_direction > 0:
+                        self.player.texture = self.player_texture_right
+                    else:
+                        self.player.texture = self.player_texture_left
+
+                    # Пересоздаём спрайт с меньшими размерами
+
+                    new_player = arcade.Sprite(self.player.texture, scale=1)
+                    new_player.center_x = old_x
+                    new_player.center_y = old_y
+                    new_player.change_x = self.player.change_x
+                    new_player.change_y = self.player.change_y
+
+                    # Заменяем спрайт
+
+                    self.player = new_player
+
+                    # Пересоздаём физ движок с обычной гравитацией
+
+                    self.physics_engine = arcade.PhysicsEnginePlatformer(
+                        self.player,
+                        platforms=self.all_sprites,
+                        gravity_constant=GRAVITY
+                    )
+
+                    # Даем игроку небольшой отскок
+
+                    self.player.change_y = 5
+
+                elif not self.player_is_dead:
                     self.player_is_dead = True
                     self.player.texture = self.player_texture_dead
 
@@ -331,6 +456,13 @@ class Level_1(arcade.Window):
                     if not self.dead_sound_played:
                         arcade.play_sound(self.dead_sound)
                         self.dead_sound_played = True
+
+        # Обновляем взрыв
+
+        if self.explosion_1:
+            self.explosion_1.update(delta_time)
+            if self.explosion_1.can_reap():
+                self.explosion_1 = None
 
         if self.player.center_x < 0:
             self.player.center_x = 0
