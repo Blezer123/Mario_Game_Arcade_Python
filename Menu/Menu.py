@@ -1,5 +1,5 @@
-import arcade
 import os
+import arcade
 
 ENEMY_SPEED = 1
 

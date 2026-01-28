@@ -19,7 +19,7 @@ SCREEN_HEIGHT = screen_height
 
 class Level_1(arcade.Window):
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mario Game", fullscreen=True)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Levels_1", fullscreen=True)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -109,6 +109,8 @@ class Level_1(arcade.Window):
 
         self.death_count = 0
         self.max_deaths = 2
+
+        self.window_title = "Level 1"
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -578,6 +580,33 @@ class Level_1(arcade.Window):
                 self.animation_timer_player = 0
 
         trofey_hit = arcade.check_for_collision_with_list(self.player, self.Trofey)
+
+        if trofey_hit:
+            if self.window_title == "Level 1":
+                self.close()
+
+                from Level_2 import main
+                main()
+
+            elif self.window_title == "Level 2":
+                self.close()
+
+                from Level_3 import main
+                main()
+
+            elif self.window_title == "Level 3":
+                self.close()
+
+                from Level_4 import main
+                main()
+
+            elif self.window_title == "Level 4":
+                self.close()
+
+                from Menu import main
+                main()
+
+
 
         # Смерть игрока
 

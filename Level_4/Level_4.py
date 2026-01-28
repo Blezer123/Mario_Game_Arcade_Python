@@ -1,6 +1,5 @@
 import arcade
 import os
-import sqlite3
 
 SPEED = 5
 GRAVITY = 0.5
@@ -18,7 +17,7 @@ SCREEN_HEIGHT = screen_height
 
 class Level_4(arcade.Window):
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mario Game", fullscreen=True)
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Level_4", fullscreen=True)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -87,6 +86,8 @@ class Level_4(arcade.Window):
 
         self.grib_baff = arcade.load_texture(os.path.join(images_dir, "Grib_Baff.png"))
 
+        self.grib_life = arcade.load_texture(os.path.join(images_dir, "Grib_Life.png"))
+
         self.active_grib_baff = arcade.SpriteList()
         self.active_grib_life = arcade.SpriteList()
 
@@ -105,6 +106,8 @@ class Level_4(arcade.Window):
 
         self.death_count = 0
         self.max_deaths = 2
+
+        self.window_title = "Level 4"
 
     def setup(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
