@@ -582,31 +582,36 @@ class Level_1(arcade.Window):
         trofey_hit = arcade.check_for_collision_with_list(self.player, self.Trofey)
 
         if trofey_hit:
+            import subprocess
+            import sys
+
             if self.window_title == "Level 1":
                 self.close()
-
-                from Level_2 import main
-                main()
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                parent_dir = os.path.dirname(current_dir)
+                level_2_path = os.path.join(parent_dir, "Level_2", "Level_2.py")
+                subprocess.Popen([sys.executable, level_2_path])
 
             elif self.window_title == "Level 2":
                 self.close()
-
-                from Level_3 import main
-                main()
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                parent_dir = os.path.dirname(current_dir)
+                level_3_path = os.path.join(parent_dir, "Level_3", "Level_3.py")
+                subprocess.Popen([sys.executable, level_3_path])
 
             elif self.window_title == "Level 3":
                 self.close()
-
-                from Level_4 import main
-                main()
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                parent_dir = os.path.dirname(current_dir)
+                level_4_path = os.path.join(parent_dir, "Level_4", "Level_4.py")
+                subprocess.Popen([sys.executable, level_4_path])
 
             elif self.window_title == "Level 4":
                 self.close()
-
-                from Menu import main
-                main()
-
-
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                parent_dir = os.path.dirname(current_dir)
+                Menu_1_path = os.path.join(parent_dir, "Menu", "Menu.py")
+                subprocess.Popen([sys.executable, Menu_1_path])
 
         # Смерть игрока
 
