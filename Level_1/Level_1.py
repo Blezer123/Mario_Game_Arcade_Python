@@ -230,20 +230,20 @@ class Level_1(arcade.Window):
 
         arcade.draw_text(
             f"Coins: {self.Coins_Sum}",
-            self.x + 750,
+            self.x + 705,
             option1_y,
             arcade.color.BLACK,
-            40,
+            30,
             font_name=self.font_name,
             anchor_x="left",
             anchor_y="center"
         )
         arcade.draw_text(
             f"Coins: {self.Coins_Sum}",
-            self.x + 757,
+            self.x + 700,
             option1_y,
             arcade.color.WHITE,
-            40,
+            30,
             font_name=self.font_name,
             anchor_x="left",
             anchor_y="center"
@@ -251,20 +251,20 @@ class Level_1(arcade.Window):
 
         arcade.draw_text(
             f"Death: {self.death_count}/{self.max_deaths + 1}",
-            self.x + 750,
+            self.x + 625,
             option1_y- 55,
             arcade.color.BLACK,
-            40,
+            30,
             font_name=self.font_name,
             anchor_x="left",
             anchor_y="center"
         )
         arcade.draw_text(
             f"Death: {self.death_count}/{self.max_deaths + 1}",
-            self.x + 757,
+            self.x + 620,
             option1_y - 55,
             arcade.color.WHITE,
-            40,
+            30,
             font_name=self.font_name,
             anchor_x="left",
             anchor_y="center"
