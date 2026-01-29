@@ -13,6 +13,7 @@ class Menu(arcade.Window):
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # Загрузка карты
+
         tmx_path = os.path.join(current_dir, "Menu_Map.tmx")
         tile_map = arcade.load_tilemap(tmx_path, scaling=1)
 
@@ -24,10 +25,12 @@ class Menu(arcade.Window):
         self.Block = tile_map.sprite_lists["Block"]
 
         # Загрузка текстур
+
         images_dir = os.path.join(current_dir, "..", "images")
         self.textures = [[arcade.load_texture(os.path.join(images_dir, "Grib_1.png")),
-                          arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
+                         arcade.load_texture(os.path.join(images_dir, "Grib_2.png"))]]
         # Загрузка спрайта индикатора
+
         self.indicator_sprite = arcade.Sprite(
             os.path.join(images_dir, "Grib_Baff.png"),
             scale=0.6
@@ -57,40 +60,13 @@ class Menu(arcade.Window):
 
         option1_y = self.screen_height // 2
 
-        # Текст "SUPER 2Artema" по центру экрана над меню (с обводкой)
-        title_y = option1_y + 300  # Располагаем над меню
-
-        # Обводка (черная)
-        arcade.draw_text(
-            "SUPER 2Artema",
-            self.x,
-            title_y,
-            arcade.color.BLACK,
-            60,
-            font_name=self.font_name,
-            anchor_x="center",
-            anchor_y="center",
-            bold=True
-        )
-        # Основной текст (белый, смещенный для эффекта обводки)
-        arcade.draw_text(
-            "SUPER 2Artema",
-            self.x - 7,
-            title_y,
-            arcade.color.WHITE,
-            60,
-            font_name=self.font_name,
-            anchor_x="center",
-            anchor_y="center",
-            bold=True
-        )
-
         if self.selected_option == 1:
             self.indicator_sprite.center_x = self.x - 80
             self.indicator_sprite.center_y = option1_y + 50
             arcade.draw_sprite(self.indicator_sprite)
 
         # текст 1 с обводкой
+
         arcade.draw_text(
             "1",
             self.x - 25,
@@ -141,6 +117,7 @@ class Menu(arcade.Window):
             arcade.draw_sprite(self.indicator_sprite)
 
         # текст 2 с обводкой
+
         arcade.draw_text(
             "2",
             self.x - 25,
@@ -184,6 +161,7 @@ class Menu(arcade.Window):
         )
 
     def on_update(self, delta_time: float):
+
         for enemy in self.Grib:
             enemy.change_x = enemy.speed * enemy.direction
             enemy.patrol_distance += enemy.change_x
@@ -212,8 +190,11 @@ class Menu(arcade.Window):
         elif key == arcade.key.ENTER:
             if self.selected_option == 1:
                 # Закрываем меню
+
                 self.close()
+
                 # Запускаем игру
+
                 game = Menu_Levels()
                 game.setup()
                 arcade.run()

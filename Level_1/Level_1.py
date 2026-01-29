@@ -195,9 +195,9 @@ class Level_1(arcade.Window):
 
     def on_draw(self):
         self.clear()
-        self.world_camera.use()
 
-        option1_y = self.screen_height // 2 - 500
+        # Используем мировую камеру для отрисовки игрового мира
+        self.world_camera.use()
 
         self.BG.draw()
         self.Ground.draw()
@@ -224,50 +224,60 @@ class Level_1(arcade.Window):
 
         arcade.draw_sprite(self.player)
 
-        self.gui_camera.use()
+        default_camera = arcade.camera.Camera2D()
+        default_camera.use()
 
-        # текст 2 с обводкой
+        # Устанавливаем вьюпорт равный размеру окна
 
-        arcade.draw_text(
-            f"Coins: {self.Coins_Sum}",
-            self.x + 705,
-            option1_y,
-            arcade.color.BLACK,
-            30,
-            font_name=self.font_name,
-            anchor_x="left",
-            anchor_y="center"
-        )
-        arcade.draw_text(
-            f"Coins: {self.Coins_Sum}",
-            self.x + 700,
-            option1_y,
-            arcade.color.WHITE,
-            30,
-            font_name=self.font_name,
-            anchor_x="left",
-            anchor_y="center"
-        )
+        default_camera.viewport = (0, self.width, 0, self.height)
+
+        text_x_right = self.width - 20
+        text_y_bottom = 40
+
+        # Текст с обводкой для смертей
 
         arcade.draw_text(
             f"Death: {self.death_count}/{self.max_deaths + 1}",
-            self.x + 625,
-            option1_y- 55,
+            text_x_right + 5,
+            text_y_bottom,
             arcade.color.BLACK,
             30,
             font_name=self.font_name,
-            anchor_x="left",
-            anchor_y="center"
+            anchor_x="right",
+            anchor_y="bottom"
         )
         arcade.draw_text(
             f"Death: {self.death_count}/{self.max_deaths + 1}",
-            self.x + 620,
-            option1_y - 55,
+            text_x_right,
+            text_y_bottom,
             arcade.color.WHITE,
             30,
             font_name=self.font_name,
-            anchor_x="left",
-            anchor_y="center"
+            anchor_x="right",
+            anchor_y="bottom"
+        )
+
+        # Текст с обводкой для монет
+
+        arcade.draw_text(
+            f"Coins: {self.Coins_Sum}",
+            text_x_right + 5,
+            text_y_bottom + 40,
+            arcade.color.BLACK,
+            30,
+            font_name=self.font_name,
+            anchor_x="right",
+            anchor_y="bottom"
+        )
+        arcade.draw_text(
+            f"Coins: {self.Coins_Sum}",
+            text_x_right,
+            text_y_bottom + 40,
+            arcade.color.WHITE,
+            30,
+            font_name=self.font_name,
+            anchor_x="right",
+            anchor_y="bottom"
         )
 
     def on_update(self, delta_time: float):
